@@ -3,10 +3,8 @@ import React from 'react';
 
 import App from "./app/app";
 
-const Index = () => {
-  return (
-    <App />
-  );
-};
+const Index = () => (
+  <App />
+);
 
 registerRootComponent(Index);

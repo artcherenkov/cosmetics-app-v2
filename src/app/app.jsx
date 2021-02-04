@@ -1,11 +1,10 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+
+import Router from '../router/router';
 
 const App = () => {
   return (
-    <View>
-      <Text>Hello world!</Text>
-    </View>
+    <Router />
   );
 };
 
