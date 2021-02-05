@@ -82,10 +82,6 @@ const CalendarStrip = () => {
       <Text style={styles.month}>{getMonths(calStripLeft)}</Text>
       <View style={styles.listContainer}>
         <GestureRecognizer
-          config={{
-            velocityThreshold: 0.3,
-            directionalOffsetThreshold: 40,
-          }}
           onSwipeLeft={scrollRight}
           onSwipeRight={scrollLeft}
         >

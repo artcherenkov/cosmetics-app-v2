@@ -14,11 +14,12 @@ export default StyleSheet.create({
   },
   contentIsActive: {
     borderWidth: 2,
+    borderColor: Color.ORANGE,
   },
   contentIsToday: {
     borderWidth: 2,
     borderColor: Color.PRIMARY,
-    opacity: .7,
+    backgroundColor: Color.PRIMARY30,
   },
   day: {
     fontWeight: `700`,

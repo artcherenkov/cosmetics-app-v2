@@ -12,11 +12,11 @@ const DayNumber = ({ date, size, activeDate, setActiveDate }) => {
 
   const getContentStyles = () => {
     const stylesToApply = [styles.content];
-    if (isActiveDate) {
-      stylesToApply.push(styles.contentIsActive);
-    }
     if (isToday) {
       stylesToApply.push(styles.contentIsToday);
+    }
+    if (isActiveDate) {
+      stylesToApply.push(styles.contentIsActive);
     }
 
     return stylesToApply;
