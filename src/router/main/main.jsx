@@ -1,19 +1,19 @@
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import { ROUTER_OPTIONS } from "../../utils/router";
 import ProfileRouter from "../profile/profile";
 import CalendarRouter from "../calendar/calendar";
 import LibraryScreen from "../../pages/library/library";
 
-const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
 
 const MainRouter = () => (
-  <Tab.Navigator {...ROUTER_OPTIONS}>
-    <Tab.Screen name="Profile" component={ProfileRouter} />
-    <Tab.Screen name="Calendar" component={CalendarRouter} />
-    <Tab.Screen name="Library" component={LibraryScreen} />
-  </Tab.Navigator>
+  <Drawer.Navigator {...ROUTER_OPTIONS}>
+    <Drawer.Screen name="Profile" component={ProfileRouter} />
+    <Drawer.Screen name="Calendar" component={CalendarRouter} />
+    <Drawer.Screen name="Library" component={LibraryScreen} />
+  </Drawer.Navigator>
 );
 
 export default MainRouter;
