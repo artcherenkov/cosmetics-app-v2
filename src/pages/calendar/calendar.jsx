@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {View, Text, Button} from 'react-native';
+import {SafeAreaView, Button} from 'react-native';
 
-import styles from './styles';
+import CalendarStrip from "../../components/calendar-strip/calendar-strip";
 
 const CalendarScreen = ({ navigation }) => {
 
@@ -12,10 +12,10 @@ const CalendarScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.previewContainer}>
-      <Text style={styles.previewHeader}>CalendarScreen</Text>
+    <SafeAreaView>
+      <CalendarStrip />
       <Button title="To registration" onPress={handleBackBtnClick.bind(this, `hello`)} />
-    </View>
+    </SafeAreaView>
   );
 };
 
