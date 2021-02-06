@@ -19,7 +19,7 @@ export default StyleSheet.create({
   contentIsToday: {
     borderWidth: 2,
     borderColor: Color.PRIMARY,
-    backgroundColor: Color.PRIMARY30,
+    backgroundColor: Color.PRIMARY_10_RGB,
   },
   day: {
     fontWeight: `700`,

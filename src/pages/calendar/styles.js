@@ -1,13 +1,21 @@
 import { StyleSheet } from "react-native";
+import { Color } from "../../constants/colors";
 
 export default StyleSheet.create({
-  previewContainer: {
-    width: `100%`,
-    height: `100%`,
-    justifyContent: `center`,
-    alignItems: `center`,
+  agenda: {
+    flexGrow: 1,
+    backgroundColor: `white`,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
   },
-  previewHeader: {
-    fontSize: 48,
+  calendarStripContainer: {
+    backgroundColor: `white`,
+  },
+  calendarStrip: {
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    paddingTop: 10,
+    paddingBottom: 40,
+    backgroundColor: Color.BACKGROUND_BLUE,
   },
 });

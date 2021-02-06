@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import {FlatList, View, Text, Dimensions} from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import moment from 'moment';
@@ -42,7 +43,7 @@ const getWeekStartIndex = (date, { begin }) => {
 };
 const getDayNumberSize = () => (Dimensions.get(`window`).width - 60) / 7;
 
-const CalendarStrip = () => {
+const CalendarStrip = ({ style }) => {
   const [activeDate, setActiveDate] = useState(moment().toISOString());
   const [calStripLeft, setCalStripLeft] = useState(moment(activeDate).startOf(`week`).toISOString());
 
@@ -78,8 +79,7 @@ const CalendarStrip = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.month}>{getMonths(calStripLeft)}</Text>
+    <View style={[{ ...style }, styles.container]}>
       <View style={styles.listContainer}>
         <GestureRecognizer
           onSwipeLeft={scrollRight}
@@ -98,11 +98,13 @@ const CalendarStrip = () => {
           />
         </GestureRecognizer>
       </View>
-      <Text>{moment(activeDate).format(`DD-MM-YYYY`)}</Text>
+      <Text style={styles.month}>{getMonths(calStripLeft)}</Text>
     </View>
   );
 };
 
-CalendarStrip.propTypes = {};
+CalendarStrip.propTypes = {
+  style: PropTypes.object,
+};
 
 export default CalendarStrip;

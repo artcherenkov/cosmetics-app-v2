@@ -8,7 +8,7 @@ export default StyleSheet.create({
     textAlign: `center`,
     fontSize: 18,
     textTransform: `uppercase`,
-    marginBottom: 10,
+    marginTop: 10,
   },
   listContainer: {
     flexDirection: `row`,
