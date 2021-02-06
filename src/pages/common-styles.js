@@ -1,5 +1,5 @@
-import {StyleSheet} from "react-native";
-import { Color } from "../constants/colors";
+import { StyleSheet } from 'react-native';
+import { Color } from '../constants/colors';
 
 export default StyleSheet.create({
   page: {

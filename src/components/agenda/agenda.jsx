@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Text, View, ScrollView} from 'react-native';
+import { Text, View, ScrollView } from 'react-native';
 
 import styles from './styles';
-import { range } from "../../utils/common";
+import { range } from '../../utils/common';
 
 const getHourStyles = (index) => {
   const res = [styles.hourSection];

@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {FlatList, View, Text, Dimensions} from 'react-native';
+import { FlatList, View, Text, Dimensions } from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import moment from 'moment';
 
 import styles from './styles';
-import DayNumber from "./components/day-number/day-number";
+import DayNumber from './components/day-number/day-number';
 
 const BASIC_SETUP = {
   begin: moment(`2020-01-01`),
@@ -50,7 +50,7 @@ const CalendarStrip = ({ style }) => {
   const listRef = useRef(null);
   const days = fillDaysArray(BASIC_SETUP);
   const size = getDayNumberSize();
-  const componentSetup = {...BASIC_SETUP, days, size};
+  const componentSetup = { ...BASIC_SETUP, days, size };
 
   const initialScrollIndex = getWeekStartIndex(calStripLeft, componentSetup);
 

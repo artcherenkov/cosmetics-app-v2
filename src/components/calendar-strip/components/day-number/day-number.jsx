@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {View, Text, TouchableOpacity} from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import moment from 'moment';
 
 import styles from './styles';
@@ -23,7 +23,7 @@ const DayNumber = ({ date, size, activeDate, setActiveDate }) => {
   };
 
   return (
-    <View style={[{ width: size, height: size }, styles.dayContainer ]}>
+    <View style={[{ width: size, height: size }, styles.dayContainer]}>
       <TouchableOpacity style={getContentStyles()} onPress={handleDayClick}>
         <Text style={styles.dayOfWeek}>{moment(date).format(`dd`)}</Text>
         <Text style={styles.day}>{moment(date).format(`D`)}</Text>

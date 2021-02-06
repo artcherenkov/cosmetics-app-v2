@@ -1,8 +1,8 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 
-import AuthScreen from "../pages/auth/auth";
-import MainRouter from "./main/main";
+import AuthScreen from '../pages/auth/auth';
+import MainRouter from './main/main';
 
 const IS_LOGGED_IN = true;
 

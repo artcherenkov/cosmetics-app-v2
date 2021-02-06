@@ -1,6 +1,6 @@
 import React from 'react';
-import AntDesign from "react-native-vector-icons/AntDesign";
-import { Color } from "../constants/colors";
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import { Color } from '../constants/colors';
 
 export const ROUTER_OPTIONS = {
   screenOptions: ({ route }) => ({

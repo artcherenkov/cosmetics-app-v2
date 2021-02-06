@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {View, Text, TouchableOpacity} from 'react-native';
-import Entypo from "react-native-vector-icons/Entypo";
+import { View, Text, TouchableOpacity } from 'react-native';
+import Entypo from 'react-native-vector-icons/Entypo';
 
-import CalendarStrip from "../../components/calendar-strip/calendar-strip";
-import Agenda from "../../components/agenda/agenda";
+import CalendarStrip from '../../components/calendar-strip/calendar-strip';
+import Agenda from '../../components/agenda/agenda';
 import commonStyles from '../common-styles';
 import styles from './styles';
 
