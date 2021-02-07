@@ -1,8 +1,8 @@
 export const ActionType = {
-  SAY_HELLO: `SAY_HELLO`,
+  CHANGE_ACTIVE_DATE: `CHANGE_ACTIVE_DATE`,
 };
 
-export const sayHello = (hello) => ({
-  type: ActionType.SAY_HELLO,
-  payload: hello,
+export const changeActiveDate = (date) => ({
+  type: ActionType.CHANGE_ACTIVE_DATE,
+  payload: date,
 });

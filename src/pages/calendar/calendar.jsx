@@ -9,18 +9,13 @@ import commonStyles from '../common-styles';
 import styles from './styles';
 
 const CalendarScreen = ({ navigation }) => {
-  const handleRegistrationBtnClick = (btnTitle) => {
-    navigation.setOptions({ title: btnTitle });
-    navigation.navigate(`Registration`);
-  };
-
   return (
     <View style={commonStyles.page}>
       <View style={commonStyles.header}>
         <TouchableOpacity onPress={() => navigation.openDrawer()}>
           <Entypo name="menu" size={30} />
         </TouchableOpacity>
-        <Text style={commonStyles.headerTitle}>Календарь</Text>
+        <Text style={commonStyles.headerTitle}>Расписание</Text>
       </View>
       <Agenda style={styles.agenda} />
       <View style={styles.calendarStripContainer}>
