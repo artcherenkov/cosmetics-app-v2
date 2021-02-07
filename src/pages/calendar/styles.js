@@ -18,4 +18,8 @@ export default StyleSheet.create({
     paddingBottom: 40,
     backgroundColor: Color.BACKGROUND_BLUE,
   },
+  dateContainerStyle: {
+    borderWidth: 3,
+    borderRadius: 10,
+  },
 });
