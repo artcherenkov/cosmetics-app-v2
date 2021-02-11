@@ -1,13 +1,14 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  previewContainer: {
-    width: `100%`,
-    height: `100%`,
-    justifyContent: `center`,
-    alignItems: `center`,
+  container: {
+    backgroundColor: `white`,
+    flexGrow: 1,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
   },
-  previewHeader: {
-    fontSize: 48,
+  list: {
+    flexGrow: 1,
+    padding: 30,
   },
 });

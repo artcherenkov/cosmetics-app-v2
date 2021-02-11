@@ -1,14 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, TouchableOpacity } from 'react-native';
+import Entypo from "react-native-vector-icons/Entypo";
 
 import styles from './styles';
+import commonStyles from "../common-styles";
 
 const ProfileScreen = ({ navigation }) => {
   return (
-    <View style={styles.previewContainer}>
-      <Text style={styles.previewHeader}>ProfileScreen</Text>
-      <Button title="To rating" onPress={() => navigation.navigate(`Rating`)} />
+    <View style={commonStyles.page}>
+      <View style={commonStyles.header}>
+        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+          <Entypo name="menu" size={30}/>
+        </TouchableOpacity>
+        <Text style={commonStyles.headerTitle}>Профиль</Text>
+      </View>
+      <View style={styles.container}>
+      </View>
     </View>
   );
 };

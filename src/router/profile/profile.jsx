@@ -8,7 +8,7 @@ const Stack = createStackNavigator();
 
 const ProfileRouter = () => (
   <Stack.Navigator>
-    <Stack.Screen name="Profile" component={ProfileScreen} />
+    <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: `Профиль`, headerShown: false }} />
     <Stack.Screen name="Rating" component={RatingScreen} />
   </Stack.Navigator>
 );

@@ -10,9 +10,9 @@ const Drawer = createDrawerNavigator();
 
 const MainRouter = () => (
   <Drawer.Navigator {...ROUTER_OPTIONS}>
-    <Drawer.Screen name="Calendar" component={CalendarRouter} />
-    <Drawer.Screen name="Profile" component={ProfileRouter} />
-    <Drawer.Screen name="Library" component={LibraryScreen} />
+    <Drawer.Screen name="Calendar" component={CalendarRouter} options={{ title: `Расписание` }} />
+    <Drawer.Screen name="Profile" component={ProfileRouter} options={{ title: `Профиль` }} />
+    <Drawer.Screen name="Library" component={LibraryScreen} options={{ title: `База знаний` }} />
   </Drawer.Navigator>
 );
 
