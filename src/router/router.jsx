@@ -1,15 +1,24 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 
 import AuthScreen from '../pages/auth/auth';
 import MainRouter from './main/main';
+import { getIsLoggedIn } from "../store/reducers/app-user/selectors";
 
-const IS_LOGGED_IN = true;
-
-const Router = () => (
+const Router = ({ isLoggedIn }) => (
   <NavigationContainer>
-    {IS_LOGGED_IN ? <MainRouter /> : <AuthScreen />}
+    {isLoggedIn ? <MainRouter /> : <AuthScreen />}
   </NavigationContainer>
 );
 
-export default Router;
+Router.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  isLoggedIn: getIsLoggedIn(state),
+});
+
+export default connect(mapStateToProps, null)(Router);

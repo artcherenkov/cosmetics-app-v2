@@ -1,13 +1,19 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  previewContainer: {
-    width: `100%`,
-    height: `100%`,
-    justifyContent: `center`,
-    alignItems: `center`,
+  container: {
+    marginTop: 50,
+    flexGrow: 1,
   },
-  previewHeader: {
-    fontSize: 48,
+  inputContainer: {
+    margin: 10,
+  },
+  input: {
+    borderWidth: 1,
+    borderRadius: 5,
+    height: 30,
+    width: 300,
+    marginVertical: 10,
+    padding: 5,
   },
 });
