@@ -1,10 +1,10 @@
-import { authenticate } from "./action";
+import { authenticate, setError } from "./action";
 
-export const login = (credentials) => (dispatch, _getState, api) => {
+export const auth = (credentials, endpoint) => (dispatch, _getState, api) => {
   console.log(credentials);
   return (
-    api.post(`/api/v1/user/login`, credentials)
+    api.post(`/api/v1/user/${endpoint}`, credentials)
       .then(({ data }) => dispatch(authenticate(data)))
-      .catch((err) => console.log(err))
+      .catch((err) => dispatch(setError(err)))
   );
 };
