@@ -1,7 +1,7 @@
 import { renameKeysSnakeToCamel } from '../utils';
 import moment from 'moment';
 
-const extractDate = (eventList) => moment(eventList[0].time).format(`YYYY-MM-DD`);
+const extractDate = (event) => moment(event.time).format(`YYYY-MM-DD`);
 const adaptServicesListToClient = (event) => {
   const { services } = event;
   return services.reduce((acc, service) => {
@@ -14,23 +14,38 @@ const adaptServicesListToClient = (event) => {
     return acc;
   }, []);
 };
-const adaptEventListToClient = (processedRegs) => {
-  const { eventList } = processedRegs;
-  return eventList.reduce((acc, event) => {
-    const { client, recordId, cost, seanceLength, time } = event;
-    acc = [...acc, {
-      registrationId: recordId,
-      clientName: client.name,
-      cost,
-      duration: seanceLength / 60,
-      time,
-      services: adaptServicesListToClient(event),
-    }];
-    return acc;
-  }, []);
+const adaptEventToClient = (event) => {
+  const { client, recordId, cost, seanceLength, time } = event;
+  return {
+    registrationId: recordId,
+    clientName: client.name,
+    cost,
+    duration: seanceLength / 60,
+    time,
+    services: adaptServicesListToClient(event),
+  };
 };
 
 export const adaptRegsToClient = (parsedRegs) => {
   const renamedRegs = renameKeysSnakeToCamel(parsedRegs);
-  return { [extractDate(renamedRegs.eventList)]: { ...renamedRegs, eventList: adaptEventListToClient(renamedRegs) } };
+
+  console.time(`test`);
+
+  const res = renamedRegs.eventList.reduce((acc, item) => {
+    const adaptedItem = adaptEventToClient(item);
+    const date = extractDate(adaptedItem);
+
+    const currentEventList = acc[date] ? acc[date].eventList : [];
+    const currentCost = acc[date] ? acc[date].fullCost : 0;
+
+    const eventList = [...currentEventList, adaptedItem];
+    const fullCost = currentCost + adaptedItem.cost;
+
+    acc = { ...acc, [date]: { eventList, fullCost, regsCount: eventList.length } };
+    return acc;
+  }, {});
+
+  console.timeEnd(`test`);
+
+  return res;
 };

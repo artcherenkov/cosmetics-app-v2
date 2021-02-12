@@ -12,6 +12,7 @@ import moment from "moment";
 import { Color } from "../../constants/colors";
 import { getActiveDate } from "../../store/reducers/app-state/selectors";
 import { changeActiveDate } from "../../store/action";
+import { getRegistrations } from "../../store/api-action";
 
 const getActiveDates = (activeDate) => {
   return [{
@@ -23,7 +24,8 @@ const getActiveDates = (activeDate) => {
   }];
 };
 
-const CalendarScreen = ({ navigation, activeDate, handleDayClick }) => {
+const CalendarScreen = ({ navigation, activeDate, handleDayClick, fetchRegistrations }) => {
+  fetchRegistrations();
   return (
     <View style={commonStyles.page}>
       <View style={commonStyles.header}>
@@ -51,6 +53,7 @@ CalendarScreen.propTypes = {
   navigation: PropTypes.any.isRequired,
   activeDate: PropTypes.string.isRequired,
   handleDayClick: PropTypes.func.isRequired,
+  fetchRegistrations: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -61,6 +64,9 @@ const mapDispatchToProps = (dispatch) => ({
   handleDayClick(date) {
     const isoDate = moment(date).toISOString();
     dispatch(changeActiveDate(isoDate));
+  },
+  fetchRegistrations() {
+    dispatch(getRegistrations());
   },
 });
 
