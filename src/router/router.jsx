@@ -9,7 +9,7 @@ import { getIsLoggedIn } from "../store/reducers/app-user/selectors";
 
 const Router = ({ isLoggedIn }) => (
   <NavigationContainer>
-    {isLoggedIn ? <MainRouter /> : <AuthScreen />}
+    {!isLoggedIn ? <MainRouter /> : <AuthScreen />}
   </NavigationContainer>
 );
 

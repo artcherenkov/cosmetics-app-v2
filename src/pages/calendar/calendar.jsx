@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { View, Text, TouchableOpacity } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
+import moment from "moment";
 
 import CalendarStrip from 'react-native-calendar-strip';
 import Agenda from '../../components/agenda/agenda';
 import commonStyles from '../common-styles';
 import styles from './styles';
-import moment from "moment";
 import { Color } from "../../constants/colors";
-import { getActiveDate } from "../../store/reducers/app-state/selectors";
-import { changeActiveDate } from "../../store/action";
-import { getRegistrations } from "../../store/api-action";
+import { getActiveDate, getIsLoading } from "../../store/reducers/app-state/selectors";
+import { changeActiveDate, resetLoading, setLoading } from "../../store/action";
+import { fetchOneRegistration, fetchRegistrations } from "../../store/api-action";
+import { getRegistrations } from "../../store/reducers/app-store/selectors";
+import Loading from "../../components/loading/loading";
 
 const getActiveDates = (activeDate) => {
   return [{
@@ -24,8 +26,18 @@ const getActiveDates = (activeDate) => {
   }];
 };
 
-const CalendarScreen = ({ navigation, activeDate, handleDayClick, fetchRegistrations }) => {
-  fetchRegistrations();
+const CalendarScreen = ({ navigation, activeDate, handleDayClick, fetchRegistrations, fetchOneRegistration, registrations, isLoading }) => {
+  useEffect(() => {
+    fetchRegistrations();
+  }, [fetchRegistrations]);
+
+  useEffect(() => {
+    const date = moment(activeDate).format(`YYYY-MM-DD`);
+    if (registrations && !registrations[date]) {
+      fetchOneRegistration(date);
+    }
+  }, [activeDate]);
+
   return (
     <View style={commonStyles.page}>
       <View style={commonStyles.header}>
@@ -34,6 +46,7 @@ const CalendarScreen = ({ navigation, activeDate, handleDayClick, fetchRegistrat
         </TouchableOpacity>
         <Text style={commonStyles.headerTitle}>Расписание</Text>
       </View>
+      {isLoading && <Loading />}
       <Agenda style={styles.agenda}/>
       <View style={styles.calendarStripContainer}>
         <CalendarStrip
@@ -50,6 +63,7 @@ const CalendarScreen = ({ navigation, activeDate, handleDayClick, fetchRegistrat
 };
 
 CalendarScreen.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
   navigation: PropTypes.any.isRequired,
   activeDate: PropTypes.string.isRequired,
   handleDayClick: PropTypes.func.isRequired,
@@ -58,6 +72,8 @@ CalendarScreen.propTypes = {
 
 const mapStateToProps = (state) => ({
   activeDate: getActiveDate(state),
+  registrations: getRegistrations(state),
+  isLoading: getIsLoading(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -66,7 +82,14 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(changeActiveDate(isoDate));
   },
   fetchRegistrations() {
-    dispatch(getRegistrations());
+    dispatch(setLoading());
+    dispatch(fetchRegistrations())
+      .then(() => dispatch(resetLoading()));
+  },
+  fetchOneRegistration(date) {
+    dispatch(setLoading());
+    dispatch(fetchOneRegistration(date))
+      .then(() => dispatch(resetLoading()));
   },
 });
 

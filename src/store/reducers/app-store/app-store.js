@@ -1,14 +1,17 @@
-import { rawRegistrations } from "../../../data/registrations";
-import { adaptRegsToClient } from "../../../core/adapter/registrations";
-
-const parsedRegs = JSON.parse(rawRegistrations);
+import { ActionType } from "../../action";
 
 const initialState = {
-  registrations: adaptRegsToClient(parsedRegs),
+  registrations: {},
 };
 
 const appStore = (state = initialState, action) => {
   switch (action.type) {
+    case ActionType.LOAD_REGISTRATIONS: {
+      return { ...state, registrations: action.payload };
+    }
+    case ActionType.LOAD_ONE_REGISTRATION: {
+      return { ...state, registrations: { ...state.registrations, ...action.payload } };
+    }
     default:
       return state;
   }

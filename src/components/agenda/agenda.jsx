@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Text, View, ScrollView } from 'react-native';
+import moment from "moment";
 
 import styles from './styles';
 import { range } from '../../utils/common';
 import { getRegistrations } from "../../store/reducers/app-store/selectors";
 import ClientRegistration from "./components/client-registration";
+import { getActiveDate } from "../../store/reducers/app-state/selectors";
 
 const getHourStyles = (index) => {
   const res = [styles.hourSection];
@@ -18,8 +20,12 @@ const getHourStyles = (index) => {
 };
 const formatWithLeadingZero = (number) => number < 10 ? `0${number}:00` : `${number}:00`;
 
-const Agenda = ({ style, registrations }) => {
-  const activeDateEvents = registrations[`2021-01-30`].eventList;
+const Agenda = ({ style, registrations, activeDate }) => {
+  let activeDateEvents = registrations ? registrations[moment(activeDate).format(`YYYY-MM-DD`)] : null;
+
+  useEffect(() => {
+    activeDateEvents = registrations ? registrations[moment(activeDate).format(`YYYY-MM-DD`)] : null;
+  }, [activeDate]);
 
   return (
     <ScrollView style={[{ ...style }, styles.agendaContainer]}>
@@ -31,7 +37,7 @@ const Agenda = ({ style, registrations }) => {
           <View key={`hour-${i}`} style={getHourStyles(i)}/>
         </View>
       ))}
-      {activeDateEvents && activeDateEvents.map((registration, i) => (
+      {activeDateEvents && activeDateEvents.eventList.map((registration, i) => (
         <ClientRegistration key={`reg-${i}`} registration={registration} />
       ))}
     </ScrollView>
@@ -39,12 +45,14 @@ const Agenda = ({ style, registrations }) => {
 };
 
 Agenda.propTypes = {
-  style: PropTypes.object,
+  style: PropTypes.any,
   registrations: PropTypes.object.isRequired,
+  activeDate: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   registrations: getRegistrations(state),
+  activeDate: getActiveDate(state),
 });
 
 export { Agenda };

@@ -29,9 +29,7 @@ const adaptEventToClient = (event) => {
 export const adaptRegsToClient = (parsedRegs) => {
   const renamedRegs = renameKeysSnakeToCamel(parsedRegs);
 
-  console.time(`test`);
-
-  const res = renamedRegs.eventList.reduce((acc, item) => {
+  return renamedRegs.eventList.reduce((acc, item) => {
     const adaptedItem = adaptEventToClient(item);
     const date = extractDate(adaptedItem);
 
@@ -44,8 +42,4 @@ export const adaptRegsToClient = (parsedRegs) => {
     acc = { ...acc, [date]: { eventList, fullCost, regsCount: eventList.length } };
     return acc;
   }, {});
-
-  console.timeEnd(`test`);
-
-  return res;
 };

@@ -1,8 +1,8 @@
-import { authenticate, setError } from "./action";
+import { authenticate, loadRegistrations, loadOneRegistration, setError } from "./action";
 import { adaptRegsToClient } from "../core/adapter/registrations";
+import moment from "moment";
 
 export const auth = (credentials, endpoint) => (dispatch, _getState, api) => {
-  console.log(credentials);
   return (
     api.post(`/api/v1/user/${endpoint}`, credentials)
       .then(({ data }) => dispatch(authenticate(data)))
@@ -10,12 +10,22 @@ export const auth = (credentials, endpoint) => (dispatch, _getState, api) => {
   );
 };
 
-export const getRegistrations = () => (dispatch, getState, api) => {
+export const fetchRegistrations = () => (dispatch, getState, api) => {
   return (
-    api.get(`/api/v1/event/get/2021-02-12`, {
+    api.get(`/api/v1/event/get/${moment().format(`YYYY-MM-DD`)}`, {
       headers: { Authorization: getState().USER.token },
     })
-      .then(({ data }) => console.log(adaptRegsToClient(data)))
+      .then(({ data }) => dispatch(loadRegistrations(adaptRegsToClient(data))))
+      .catch((err) => console.log(err))
+  );
+};
+
+export const fetchOneRegistration = (date) => (dispatch, getState, api) => {
+  return (
+    api.get(`/api/v1/event/get_one/${date}`, {
+      headers: { Authorization: getState().USER.token },
+    })
+      .then(({ data }) => dispatch(loadOneRegistration(adaptRegsToClient(data))))
       .catch((err) => console.log(err))
   );
 };
