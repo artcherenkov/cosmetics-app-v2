@@ -1,4 +1,4 @@
-import { authenticate, loadRegistrations, loadOneRegistration, setError } from "./action";
+import { authenticate, loadRegistrations, loadOneRegistration, setError, loadUser } from "./action";
 import { adaptRegsToClient } from "../core/adapter/registrations";
 import moment from "moment";
 
@@ -9,6 +9,14 @@ export const auth = (credentials, endpoint) => (dispatch, _getState, api) => {
       .catch((err) => dispatch(setError(err)))
   );
 };
+
+export const fetchUser = () => (dispatch, getState, api) => (
+  api.get(`/api/v1/user/me`, {
+    headers: { Authorization: getState().USER.token },
+  })
+    .then(({ data }) => dispatch(loadUser(data)))
+    .catch((err) => console.log(err))
+);
 
 export const fetchRegistrations = () => (dispatch, getState, api) => {
   return (

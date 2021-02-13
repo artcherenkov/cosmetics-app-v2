@@ -2,6 +2,7 @@ export const ActionType = {
   // store
   LOAD_REGISTRATIONS: `LOAD_REGISTRATIONS`,
   LOAD_ONE_REGISTRATION: `LOAD_ONE_REGISTRATION`,
+  LOAD_USER: `LOAD_USER`,
   // state
   CHANGE_ACTIVE_DATE: `CHANGE_ACTIVE_DATE`,
   SET_LOADING: `SET_LOADING`,
@@ -18,10 +19,14 @@ export const loadRegistrations = (regs) => ({
   payload: regs,
 });
 
-// store
 export const loadOneRegistration = (reg) => ({
   type: ActionType.LOAD_ONE_REGISTRATION,
   payload: reg,
+});
+
+export const loadUser = (user) => ({
+  type: ActionType.LOAD_USER,
+  payload: user,
 });
 
 // state

@@ -1,7 +1,9 @@
 import { ActionType } from "../../action";
+import { renameKeysSnakeToCamel } from "../../../core/utils";
 
 const initialState = {
   registrations: {},
+  user: {},
 };
 
 const appStore = (state = initialState, action) => {
@@ -11,6 +13,9 @@ const appStore = (state = initialState, action) => {
     }
     case ActionType.LOAD_ONE_REGISTRATION: {
       return { ...state, registrations: { ...state.registrations, ...action.payload } };
+    }
+    case ActionType.LOAD_USER: {
+      return { ...state, user: renameKeysSnakeToCamel(action.payload) };
     }
     default:
       return state;
