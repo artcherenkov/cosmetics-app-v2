@@ -17,16 +17,30 @@ import { getRegistrations } from "../../store/reducers/app-store/selectors";
 import Loading from "../../components/loading/loading";
 
 const getActiveDates = (activeDate) => {
-  return [{
-    startDate: moment(),
-    dateContainerStyle: [styles.dateContainerStyle, { borderColor: Color.PRIMARY }],
-  }, {
-    startDate: moment(activeDate),
-    dateContainerStyle: [styles.dateContainerStyle, { borderColor: Color.ORANGE }],
-  }];
+  const today = moment().format(`YYYY-MM-DD`);
+  return [
+    {
+      startDate: today,
+      dateContainerStyle: [styles.dateContainerStyle, { borderColor: Color.PRIMARY }],
+    },
+    {
+      startDate: moment(activeDate),
+      dateContainerStyle: [styles.dateContainerStyle, { borderColor: Color.ORANGE }],
+    },
+  ];
 };
 
-const CalendarScreen = ({ navigation, activeDate, handleDayClick, fetchRegistrations, fetchOneRegistration, registrations, isLoading }) => {
+const CalendarScreen = (props) => {
+  const {
+    navigation,
+    isLoading,
+    activeDate,
+    registrations,
+    handleDayClick,
+    fetchRegistrations,
+    fetchOneRegistration,
+  } = props;
+
   useEffect(() => {
     fetchRegistrations();
   }, [fetchRegistrations]);
@@ -46,16 +60,16 @@ const CalendarScreen = ({ navigation, activeDate, handleDayClick, fetchRegistrat
         </TouchableOpacity>
         <Text style={commonStyles.headerTitle}>Расписание</Text>
       </View>
-      {isLoading && <Loading />}
+      {isLoading && <Loading/>}
       <Agenda style={styles.agenda}/>
       <View style={styles.calendarStripContainer}>
         <CalendarStrip
-          scrollable
           style={{ height: 200, paddingTop: 20, paddingBottom: 10 }}
           calendarColor={Color.BACKGROUND_BLUE}
           iconContainer={{ flex: 0.1 }}
           customDatesStyles={getActiveDates(activeDate)}
           onDateSelected={handleDayClick}
+          calendarAnimation={{ type: `parallel`, duration: 200 }}
         />
       </View>
     </View>
