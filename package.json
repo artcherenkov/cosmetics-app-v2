@@ -9,6 +9,7 @@
     "lint": "npx eslint ./src --ext .js,.jsx --fix"
   },
   "dependencies": {
+    "@react-native-community/datetimepicker": "3.0.9",
     "@react-navigation/bottom-tabs": "5.11.7",
     "@react-navigation/drawer": "5.12.3",
     "@react-navigation/native": "5.9.2",

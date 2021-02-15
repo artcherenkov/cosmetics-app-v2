@@ -29,12 +29,16 @@ const initialState = {
   activeDate: moment().toISOString(),
   isLoading: false,
   error: null,
+  activeRegistration: null,
 };
 
 const appState = (state = initialState, action) => {
   switch (action.type) {
     case ActionType.CHANGE_ACTIVE_DATE: {
       return { ...state, activeDate: action.payload };
+    }
+    case ActionType.SET_ACTIVE_REGISTRATION: {
+      return { ...state, activeRegistration: action.payload };
     }
     case ActionType.SET_LOADING: {
       return { ...state, isLoading: true };

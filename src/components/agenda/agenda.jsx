@@ -46,7 +46,7 @@ const Agenda = ({ style, registrations, activeDate }) => {
 
 Agenda.propTypes = {
   style: PropTypes.any,
-  registrations: PropTypes.object.isRequired,
+  registrations: PropTypes.any,
   activeDate: PropTypes.string.isRequired,
 };
 

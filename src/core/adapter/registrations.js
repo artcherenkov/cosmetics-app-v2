@@ -6,11 +6,7 @@ const adaptServicesListToClient = (event) => {
   const { services } = event;
   return services.reduce((acc, service) => {
     const { id, cost, title } = service;
-    acc = [...acc, {
-      serviceId: id,
-      cost,
-      title,
-    }];
+    acc = [...acc, { id, cost, title }];
     return acc;
   }, []);
 };

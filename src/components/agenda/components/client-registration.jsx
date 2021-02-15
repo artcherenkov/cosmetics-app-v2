@@ -1,10 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 import moment from "moment";
 import { useNavigation } from '@react-navigation/native';
 
 import { Color } from "../../../constants/colors";
 import registrationProp from '../../../props/registration.prop';
+import { setActiveRegistration } from "../../../store/action";
 
 const OFFSET_TOP = 15;
 
@@ -17,13 +19,13 @@ const getRegContainerStyles = (time, duration) => {
   };
 };
 
-const ClientRegistration = ({ registration }) => {
-  const { duration, time } = registration;
+const ClientRegistration = ({ registration, setActiveRegistration }) => {
+  const { duration, time, registrationId } = registration;
   const navigation = useNavigation();
 
   const handleRegistrationClick = () => {
-    navigation.setOptions({ title: moment(`2021-01-30`).format(`MMM D`) });
     navigation.navigate(`Registration`);
+    setActiveRegistration(registrationId);
   };
 
   return (
@@ -58,4 +60,10 @@ ClientRegistration.propTypes = {
   registration: registrationProp.isRequired,
 };
 
-export default ClientRegistration;
+const mapDispatchToProps = (dispatch) => ({
+  setActiveRegistration(id) {
+    dispatch(setActiveRegistration(id));
+  },
+});
+
+export default connect(null, mapDispatchToProps)(ClientRegistration);
