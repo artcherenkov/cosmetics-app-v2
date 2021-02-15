@@ -80,8 +80,10 @@ CalendarScreen.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   navigation: PropTypes.any.isRequired,
   activeDate: PropTypes.string.isRequired,
+  registrations: PropTypes.object.isRequired,
   handleDayClick: PropTypes.func.isRequired,
   fetchRegistrations: PropTypes.func.isRequired,
+  fetchOneRegistration: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({

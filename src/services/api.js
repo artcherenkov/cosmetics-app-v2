@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BACKEND_URL = `https://13dd4c530fb8.ngrok.io`;
+const BACKEND_URL = `https://3c3b66836ac4.ngrok.io`;
 const REQUEST_TIMEOUT = 10000;
 
 export const createAPI = () => {

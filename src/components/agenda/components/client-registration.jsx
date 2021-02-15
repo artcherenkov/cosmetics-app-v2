@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 import moment from "moment";
 import { useNavigation } from '@react-navigation/native';
@@ -58,6 +59,7 @@ const styles = StyleSheet.create({
 
 ClientRegistration.propTypes = {
   registration: registrationProp.isRequired,
+  setActiveRegistration: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Platform, Text, View } from 'react-native';
 import styles from "../../styles";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -44,6 +45,11 @@ const DateSectionIos = ({ calendarState, onDateChange }) => {
       </View>
     </View>
   );
+};
+
+DateSectionIos.propTypes = {
+  calendarState: PropTypes.object.isRequired,
+  onDateChange: PropTypes.func.isRequired,
 };
 
 export default DateSectionIos;

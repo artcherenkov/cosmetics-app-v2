@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { View, Text, TouchableOpacity, Button } from 'react-native';
+import Feather from "react-native-vector-icons/Feather";
+import moment from "moment";
 
 import styles from './styles';
 import commonStyles from "../common-styles";
-import Feather from "react-native-vector-icons/Feather";
-
-import moment from "moment";
 import { Color } from "../../constants/colors";
 import DateSectionIos from "./components/date-section/date-section";
 import ServicesSection from "./components/services-section/services-section";
@@ -22,6 +21,10 @@ const parsedRegistration = JSON.parse(rawRegistrations);
 
 const findRegistration = (rawRegistrations, registrationId) => {
   return parsedRegistration.event_list.find((item) => item.record_id === registrationId);
+};
+const getActiveRegistration = (registrations, activeDate, id) => {
+  const formattedDate = moment(activeDate).format(`YYYY-MM-DD`);
+  return registrations[formattedDate].eventList.find((reg) => reg.registrationId === id);
 };
 
 const createService = (service) => {
@@ -55,7 +58,7 @@ const RegistrationScreen = ({ navigation, registrations, activeRegistration, act
     }
   }, [fetchServices]);
 
-  const registration = registrations[moment(activeDate).format(`YYYY-MM-DD`)].eventList.find((reg) => reg.registrationId === activeRegistration);
+  const registration = getActiveRegistration(registrations, activeDate, activeRegistration);
   const { begin, duration } = registration;
 
   const [calendarState, setCalendarState] = useState({ date: moment(begin).toISOString(), duration });
@@ -71,7 +74,6 @@ const RegistrationScreen = ({ navigation, registrations, activeRegistration, act
       services: [...prevState.services, { title: `Новая услуга`, cost: `0` }],
     }));
   };
-
   const handleServiceChange = (newItem, oldItem) => {
     console.log(`newItem`, newItem);
     console.log(`oldItem`, oldItem);
@@ -145,7 +147,12 @@ const RegistrationScreen = ({ navigation, registrations, activeRegistration, act
 };
 
 RegistrationScreen.propTypes = {
+  services: PropTypes.array.isRequired,
   navigation: PropTypes.any.isRequired,
+  activeDate: PropTypes.string.isRequired,
+  fetchServices: PropTypes.func.isRequired,
+  registrations: PropTypes.array.isRequired,
+  activeRegistration: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({

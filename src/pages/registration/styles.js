@@ -17,16 +17,6 @@ export default StyleSheet.create({
     color: `grey`,
     fontSize: 18,
   },
-  servicesContainer: {
-    margin: 15,
-    flex: 1,
-  },
-  serviceContainer: {
-    flexWrap: `wrap`,
-    flexDirection: `row`,
-    marginBottom: 15,
-    alignItems: `center`,
-  },
   serviceCost: {
     minWidth: 40,
   },
@@ -42,10 +32,6 @@ export default StyleSheet.create({
   subtitle: {
     fontSize: 20,
     marginBottom: 10,
-  },
-  cost: {
-    fontSize: 22,
-    marginBottom: 20,
   },
   controls: {
     flexDirection: `row`,

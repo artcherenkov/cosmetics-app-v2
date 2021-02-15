@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, SafeAreaView, Text, TouchableOpacity, FlatList } from 'react-native';
+import PropTypes from 'prop-types';
+import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import Entypo from "react-native-vector-icons/Entypo";
 
 import commonStyles from "../common-styles";
@@ -32,6 +33,8 @@ const LibraryScreen = ({ navigation }) => {
   );
 };
 
-LibraryScreen.propTypes = {};
+LibraryScreen.propTypes = {
+  navigation: PropTypes.any.isRequired,
+};
 
 export default LibraryScreen;
