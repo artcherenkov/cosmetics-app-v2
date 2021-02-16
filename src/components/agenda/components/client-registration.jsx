@@ -21,12 +21,12 @@ const getRegContainerStyles = (time, duration) => {
 };
 
 const ClientRegistration = ({ registration, setActiveRegistration }) => {
-  const { duration, time, registrationId } = registration;
+  const { duration, time, id } = registration;
   const navigation = useNavigation();
 
   const handleRegistrationClick = () => {
     navigation.navigate(`Registration`);
-    setActiveRegistration(registrationId);
+    setActiveRegistration(id);
   };
 
   return (

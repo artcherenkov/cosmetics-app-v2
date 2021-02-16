@@ -13,7 +13,7 @@ const adaptServicesListToClient = (event) => {
 const adaptEventToClient = (event) => {
   const { client, recordId, cost, seanceLength, time } = event;
   return {
-    registrationId: recordId,
+    id: recordId,
     clientName: client.name,
     cost,
     duration: seanceLength / 60,

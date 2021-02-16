@@ -47,7 +47,7 @@ const CalendarScreen = (props) => {
 
   useEffect(() => {
     const date = moment(activeDate).format(`YYYY-MM-DD`);
-    if (registrations && !registrations[date]) {
+    if (Object.keys(registrations).length && !registrations[date]) {
       fetchOneRegistration(date);
     }
   }, [activeDate]);
@@ -64,7 +64,7 @@ const CalendarScreen = (props) => {
       <Agenda style={styles.agenda}/>
       <View style={styles.calendarStripContainer}>
         <CalendarStrip
-          style={{ height: 200, paddingTop: 20, paddingBottom: 10 }}
+          style={{ height: 150, paddingTop: 20, paddingBottom: 20, borderTopLeftRadius: 10, borderTopRightRadius: 10 }}
           calendarColor={Color.BACKGROUND_BLUE}
           iconContainer={{ flex: 0.1 }}
           customDatesStyles={getActiveDates(activeDate)}

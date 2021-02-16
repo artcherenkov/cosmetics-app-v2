@@ -23,7 +23,7 @@ export const fetchRegistrations = () => (dispatch, getState, api) => {
     api.get(`/api/v1/event/get/${moment().format(`YYYY-MM-DD`)}`, {
       headers: { Authorization: getState().USER.token },
     })
-      .then(({ data }) => dispatch(loadRegistrations(adaptRegsToClient(data))))
+      .then(({ data }) => dispatch(loadRegistrations(data)))
       .catch((err) => console.log(err))
   );
 };
@@ -33,7 +33,7 @@ export const fetchOneRegistration = (date) => (dispatch, getState, api) => {
     api.get(`/api/v1/event/get_one/${date}`, {
       headers: { Authorization: getState().USER.token },
     })
-      .then(({ data }) => dispatch(loadOneRegistration(adaptRegsToClient(data))))
+      .then(({ data }) => dispatch(loadOneRegistration(data)))
       .catch((err) => console.log(err))
   );
 };
@@ -44,6 +44,17 @@ export const fetchServices = () => (dispatch, getState, api) => {
       headers: { Authorization: getState().USER.token },
     })
       .then(({ data }) => dispatch(loadServices(data)))
+      .catch((err) => console.log(err))
+  );
+};
+
+export const updateRegistration = (data) => (dispatch, getState, api) => {
+  console.log(data);
+  return (
+    api.post(`/api/v1/event/update`, data, {
+      headers: { Authorization: getState().USER.token },
+    })
+      .then((res) => console.log(res))
       .catch((err) => console.log(err))
   );
 };

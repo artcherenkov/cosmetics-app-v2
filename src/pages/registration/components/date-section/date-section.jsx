@@ -7,12 +7,13 @@ import moment from "moment";
 import { getDurationString } from "../../../../utils/common";
 
 const DateSectionIos = ({ calendarState, onDateChange }) => {
+  console.log(calendarState);
   return (
     <View style={styles.dateControlsContainer}>
       {Platform.OS === `ios` && <View style={{ width: `40%` }}>
         <DateTimePicker
           testID="datePicker"
-          value={new Date(calendarState.date) || moment()}
+          value={new Date(calendarState.date) || new Date()}
           mode="date"
           locale="ru"
           is24Hour={true}
@@ -26,7 +27,7 @@ const DateSectionIos = ({ calendarState, onDateChange }) => {
             <DateTimePicker
               style={{ width: 70, height: 35 }}
               testID="datePicker1"
-              value={new Date(calendarState.date) || moment()}
+              value={new Date(calendarState.date) || new Date()}
               mode={`time`}
               locale="ru"
               is24Hour={true}

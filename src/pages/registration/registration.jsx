@@ -12,7 +12,7 @@ import DateSectionIos from "./components/date-section/date-section";
 import ServicesSection from "./components/services-section/services-section";
 import { getRegistrations } from "../../store/reducers/app-store/selectors";
 import { getActiveDate } from "../../store/reducers/app-state/selectors";
-import { fetchServices } from "../../store/api-action";
+import { fetchServices, updateRegistration } from "../../store/api-action";
 import { resetLoading, setLoading } from "../../store/action";
 import { renameKeysCamelToSnake } from "../../core/utils";
 import { rawRegistrations } from "../../data/registrations";
@@ -20,11 +20,13 @@ import { rawRegistrations } from "../../data/registrations";
 const parsedRegistration = JSON.parse(rawRegistrations);
 
 const findRegistration = (rawRegistrations, registrationId) => {
-  return parsedRegistration.event_list.find((item) => item.record_id === registrationId);
+  console.log(registrationId);
+  console.log(rawRegistrations.event_list.find((item) => item.record_id === registrationId));
+  return rawRegistrations.event_list.find((item) => item.record_id === registrationId);
 };
 const getActiveRegistration = (registrations, activeDate, id) => {
   const formattedDate = moment(activeDate).format(`YYYY-MM-DD`);
-  return registrations[formattedDate].eventList.find((reg) => reg.registrationId === id);
+  return registrations[formattedDate].eventList.find((reg) => reg.id === id);
 };
 
 const createService = (service) => {
@@ -51,7 +53,7 @@ const createServiceList = (services) => {
   };
 };
 
-const RegistrationScreen = ({ navigation, registrations, activeRegistration, activeDate, services, fetchServices }) => {
+const RegistrationScreen = ({ navigation, registrations, activeRegistration, activeDate, services, fetchServices, updateRegistration, rawRegistrations }) => {
   useEffect(() => {
     if (!services) {
       fetchServices();
@@ -59,9 +61,9 @@ const RegistrationScreen = ({ navigation, registrations, activeRegistration, act
   }, [fetchServices]);
 
   const registration = getActiveRegistration(registrations, activeDate, activeRegistration);
-  const { begin, duration } = registration;
+  const { time, duration } = registration;
 
-  const [calendarState, setCalendarState] = useState({ date: moment(begin).toISOString(), duration });
+  const [calendarState, setCalendarState] = useState({ date: moment(time).toISOString(), duration });
   const [clientServices, setClientServices] = useState({ services: registration.services, cost: registration.cost });
 
   const handleDateChange = (event, selectedDate) => {
@@ -75,8 +77,6 @@ const RegistrationScreen = ({ navigation, registrations, activeRegistration, act
     }));
   };
   const handleServiceChange = (newItem, oldItem) => {
-    console.log(`newItem`, newItem);
-    console.log(`oldItem`, oldItem);
     const index = clientServices.services.findIndex(item => item.id === oldItem.id);
     setClientServices((prevState) => {
       const newServices = [
@@ -108,10 +108,10 @@ const RegistrationScreen = ({ navigation, registrations, activeRegistration, act
   };
 
   const handleSaveButtonClick = () => {
-    console.log({
+    updateRegistration({
       ...findRegistration(rawRegistrations, registration.id),
       ...createServiceList(clientServices.services),
-      time: moment(calendarState.date).toISOString(),
+      time: moment(calendarState.date).toISOString(true),
     });
   };
 
@@ -151,13 +151,15 @@ RegistrationScreen.propTypes = {
   navigation: PropTypes.any.isRequired,
   activeDate: PropTypes.string.isRequired,
   fetchServices: PropTypes.func.isRequired,
-  registrations: PropTypes.array.isRequired,
-  activeRegistration: PropTypes.object.isRequired,
+  registrations: PropTypes.object.isRequired,
+  updateRegistration: PropTypes.func.isRequired,
+  activeRegistration: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   activeDate: getActiveDate(state),
   registrations: getRegistrations(state),
+  rawRegistrations: state.STORE.rawRegistrations,
   activeRegistration: state.STATE.activeRegistration,
   services: state.STORE.services,
 });
@@ -166,6 +168,11 @@ const mapDispatchToProps = (dispatch) => ({
   fetchServices() {
     dispatch(setLoading());
     dispatch(fetchServices())
+      .then(() => dispatch(resetLoading()));
+  },
+  updateRegistration(data) {
+    dispatch(setLoading());
+    dispatch(updateRegistration(data))
       .then(() => dispatch(resetLoading()));
   },
 });

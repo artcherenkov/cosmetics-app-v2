@@ -16,7 +16,8 @@ const adaptServicesToClient = (rawData) => {
 };
 
 const initialState = {
-  registrations: adaptRegsToClient(parsedRegs),
+  rawRegistrations: {},
+  registrations: {},
   user: {},
   services: adaptServicesToClient(renameKeysSnakeToCamel(parsedServices).data),
 };
@@ -24,10 +25,28 @@ const initialState = {
 const appStore = (state = initialState, action) => {
   switch (action.type) {
     case ActionType.LOAD_REGISTRATIONS: {
-      return { ...state, registrations: action.payload };
+      const rawRegistrations = action.payload;
+      const registrations = adaptRegsToClient(action.payload);
+      return {
+        ...state,
+        registrations: { ...state.registrations, ...registrations },
+        rawRegistrations: { ...state.rawRegistrations, ...rawRegistrations },
+      };
     }
     case ActionType.LOAD_ONE_REGISTRATION: {
-      return { ...state, registrations: { ...state.registrations, ...action.payload } };
+      const oldEventsList = state.rawRegistrations.event_list;
+      const eventListToInsert = action.payload.event_list;
+      const newEventsList = [...oldEventsList, ...eventListToInsert];
+
+      const rawRegistrations = state.rawRegistrations;
+      rawRegistrations.event_list = newEventsList;
+
+      const registration = adaptRegsToClient(action.payload);
+      return {
+        ...state,
+        rawRegistrations,
+        registrations: { ...state.registrations, ...registration },
+      };
     }
     case ActionType.LOAD_SERVICES: {
       return { ...state, services: action.payload };
