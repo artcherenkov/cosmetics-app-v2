@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, TextInput, Button, ScrollView, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+  ActivityIndicator,
+  Alert,
+  ImageBackground,
+} from 'react-native';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 
@@ -11,26 +20,85 @@ import { resetError, resetLoading, setLoading } from "../../store/action";
 
 export const AuthField = {
   REGISTER: [
-    { name: `login`, label: `Логин (email)`, config: { required: `Заполните обязательное поле` } },
-    { name: `password`, label: `Пароль`, config: { required: `Заполните обязательное поле` } },
-    { name: `password_again`, label: `Пароль ещё раз`, config: { required: `Заполните обязательное поле` } },
-    { name: `id_ycl`, label: `ID работника`, config: { required: `Заполните обязательное поле` } },
-    { name: `id_branch`, label: `ID предприятия`, config: { required: `Заполните обязательное поле` } },
-    { name: `leader`, label: `Руководитель`, config: { required: `Заполните обязательное поле` } },
-    { name: `role`, label: `Должность`, config: { required: `Заполните обязательное поле` } },
+    {
+      name: `login`,
+      placeholder: `Введите логин`,
+      label: `Логин`,
+      config: { required: `Заполните обязательное поле` },
+    },
+    {
+      name: `password`,
+      label: `Пароль`,
+      placeholder: `Введите пароль`,
+      config: { required: `Заполните обязательное поле` },
+    },
+    {
+      name: `password_again`,
+      label: `Пароль ещё раз`,
+      placeholder: `Введите пароль еще раз`,
+      config: { required: `Заполните обязательное поле` },
+    },
+    {
+      name: `id_ycl`,
+      label: `ID работника`,
+      placeholder: `Введите ID работника`,
+      config: { required: `Заполните обязательное поле` },
+    },
+    {
+      name: `id_branch`,
+      label: `ID предприятия`,
+      placeholder: `Введите ID предприятия`,
+      config: { required: `Заполните обязательное поле` },
+    },
+    {
+      name: `leader`,
+      label: `Руководитель`,
+      placeholder: `Выберите руководителя`,
+      config: { required: `Заполните обязательное поле` },
+    },
+    {
+      name: `role`,
+      label: `Должность`,
+      placeholder: `Выберите вышу должность`,
+      config: { required: `Заполните обязательное поле` },
+    },
   ],
   LOGIN: [
-    { name: `login`, label: `Логин (email)`, config: { required: `Заполните обязательное поле` } },
-    { name: `password`, label: `Пароль`, config: { required: `Заполните обязательное поле` } },
+    {
+      name: `login`,
+      placeholder: `Введите логин`,
+      label: `Логин`,
+      config: { required: `Заполните обязательное поле` },
+    },
+    {
+      name: `password`,
+      label: `Пароль`,
+      placeholder: `Введите пароль`,
+      config: { required: `Заполните обязательное поле` },
+    },
   ],
 };
 
 const AuthScreen = ({ onSubmit, resetError, isLoading, error }) => {
-  const { register, handleSubmit, setValue, errors, setError, clearErrors, getValues, unregister } = useForm();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    errors,
+    setError,
+    clearErrors,
+    getValues,
+    unregister,
+  } = useForm();
   const [isLogin, setIsLogin] = useState(true);
   let inputsToUse = isLogin ? AuthField.LOGIN : AuthField.REGISTER;
 
   const validatePasswords = (value) => value === getValues().password || `Пароли не совпадают`;
+  const handleInputChange = (input) => (text) => setValue(input.name, text);
+  const handleChangeModePress = () => {
+    setIsLogin((prevState) => !prevState);
+    clearErrors();
+  };
 
   useEffect(() => {
     if (error) {
@@ -58,23 +126,50 @@ const AuthScreen = ({ onSubmit, resetError, isLoading, error }) => {
     });
   }, [register, isLogin]);
 
+  const getInputStyles = (isValid) => {
+    const style = [styles.input];
+    if (!isValid) {
+      style.push(styles.invalidInput);
+    }
+
+    return style;
+  };
+
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: `center`, justifyContent: `center` }}>
+      <View style={styles.logoContainer}>
+        <ImageBackground style={styles.logo} source={require(`../../img/logo.png`)}/>
+      </View>
+      <ScrollView style={styles.formContainer} contentContainerStyle={styles.formContainerContent}>
         {inputsToUse.map((input) => (
           <View style={styles.inputContainer} key={`input-${isLogin + input.name}`}>
-            <Text>{input.label}</Text>
-            <TextInput style={styles.input} autoCorrect={false} autoCapitalize="none" onChangeText={(text) => setValue(input.name, text)} />
-            {errors[input.name] && <Text style={{ color: `red` }}>{errors[input.name].message}</Text>}
+            <Text style={styles.label}>{input.label}</Text>
+            <TextInput
+              style={getInputStyles(!errors[input.name])}
+              autoCorrect={false}
+              autoCapitalize="none"
+              placeholder={input.placeholder}
+              onChangeText={handleInputChange(input)}
+            />
+            {errors[input.name] && (
+              <Text style={styles.errorMessage}>{errors[input.name].message}</Text>
+            )}
           </View>
         ))}
-        {isLoading ? <ActivityIndicator /> : <Button title={isLogin ? `Войти` : `Зарегистрироваться`} onPress={handleSubmit(onSubmit.bind(this, isLogin))}/>}
-        <TouchableOpacity style={{ marginTop: 15 }} onPress={() => {
-          setIsLogin((prevState) => !prevState);
-          clearErrors();
-        }}>
-          <Text>{isLogin ? `Еще нет аккаунта? Зарегистрироваться` : `Уже есть аккаунт? Войти`}</Text>
-        </TouchableOpacity>
+        <View style={styles.controlsContainer}>
+          {isLoading
+            ? <ActivityIndicator/>
+            : <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit(onSubmit.bind(this, isLogin))}>
+              <Text style={styles.submitText}>{isLogin ? `Войти` : `Зарегистрироваться`}</Text>
+            </TouchableOpacity>}
+          <TouchableOpacity style={styles.changeModeBtn} onPress={handleChangeModePress}>
+            <Text style={styles.changeModeText}>
+              {isLogin
+                ? `Еще нет аккаунта? Зарегистрироваться`
+                : `Уже есть аккаунт? Войти`}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </View>
   );
