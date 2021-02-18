@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import { View, Text, TouchableOpacity, Button } from 'react-native';
 import Feather from "react-native-vector-icons/Feather";
 import moment from "moment";
@@ -11,17 +12,13 @@ import { Color } from "../../constants/colors";
 import DateSectionIos from "./components/date-section/date-section";
 import ServicesSection from "./components/services-section/services-section";
 import { getRegistrations } from "../../store/reducers/app-store/selectors";
-import { getActiveDate } from "../../store/reducers/app-state/selectors";
-import { fetchServices, updateRegistration } from "../../store/api-action";
-import { resetLoading, setLoading } from "../../store/action";
+import { getActiveDate, getIsLoading } from "../../store/reducers/app-state/selectors";
+import { fetchOneRegistration, fetchServices, updateRegistration } from "../../store/api-action";
+import { changeActiveDate, resetLoading, setLoading } from "../../store/action";
 import { renameKeysCamelToSnake } from "../../core/utils";
-import { rawRegistrations } from "../../data/registrations";
-
-const parsedRegistration = JSON.parse(rawRegistrations);
+import Loading from "../../components/loading/loading";
 
 const findRegistration = (rawRegistrations, registrationId) => {
-  console.log(registrationId);
-  console.log(rawRegistrations.event_list.find((item) => item.record_id === registrationId));
   return rawRegistrations.event_list.find((item) => item.record_id === registrationId);
 };
 const getActiveRegistration = (registrations, activeDate, id) => {
@@ -53,7 +50,17 @@ const createServiceList = (services) => {
   };
 };
 
-const RegistrationScreen = ({ navigation, registrations, activeRegistration, activeDate, services, fetchServices, updateRegistration, rawRegistrations }) => {
+const RegistrationScreen = ({
+  isLoading,
+  navigation,
+  registrations,
+  activeRegistration,
+  activeDate,
+  services,
+  fetchServices,
+  updateRegistration,
+  rawRegistrations,
+}) => {
   useEffect(() => {
     if (!services) {
       fetchServices();
@@ -112,15 +119,15 @@ const RegistrationScreen = ({ navigation, registrations, activeRegistration, act
       ...findRegistration(rawRegistrations, registration.id),
       ...createServiceList(clientServices.services),
       time: moment(calendarState.date).toISOString(true),
-    });
+    }, navigation, activeDate);
   };
 
   return (
     <View style={commonStyles.page}>
       <View style={commonStyles.header}>
         <TouchableOpacity style={{ flexDirection: `row`, alignItems: `center` }} onPress={() => navigation.goBack()}>
-          <Feather name="arrow-left" size={25} color={Color.PRIMARY} />
-          <Text style={{ fontSize: 16, color: Color.PRIMARY }}>{moment().format(`D MMM`)}</Text>
+          <Feather name="arrow-left" size={25} color={Color.PRIMARY}/>
+          <Text style={{ fontSize: 16, color: Color.PRIMARY }}>{moment(activeDate).format(`D MMM`)}</Text>
         </TouchableOpacity>
         <Text style={commonStyles.headerTitle}>Регистрация</Text>
       </View>
@@ -136,10 +143,10 @@ const RegistrationScreen = ({ navigation, registrations, activeRegistration, act
           registration={registration}
           handleServiceChange={handleServiceChange}
           handleServiceCostChange={handleServiceCostChange}
+          handleServiceAdd={handleServiceAdd}
         />
         <View style={styles.controls}>
-          <Button title="Добавить услугу" onPress={handleServiceAdd}/>
-          <Button title="Сохранить" onPress={handleSaveButtonClick}/>
+          {isLoading ? <Loading/> : <Button title="Сохранить" onPress={handleSaveButtonClick}/>}
         </View>
       </View>
     </View>
@@ -162,6 +169,7 @@ const mapStateToProps = (state) => ({
   rawRegistrations: state.STORE.rawRegistrations,
   activeRegistration: state.STATE.activeRegistration,
   services: state.STORE.services,
+  isLoading: getIsLoading(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -170,9 +178,17 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(fetchServices())
       .then(() => dispatch(resetLoading()));
   },
-  updateRegistration(data) {
+  updateRegistration(data, navigation, activeDate) {
+    const date = moment(data.time).format(`YYYY-MM-DD`);
+    const oldDate = moment(activeDate).format(`YYYY-MM-DD`);
     dispatch(setLoading());
     dispatch(updateRegistration(data))
+      .then(() => dispatch(resetLoading()))
+      .then(() => navigation.goBack())
+      .then(() => dispatch(setLoading()))
+      .then(() => dispatch(fetchOneRegistration(oldDate)))
+      .then(() => dispatch(changeActiveDate(date)))
+      .then(() => dispatch(fetchOneRegistration(date)))
       .then(() => dispatch(resetLoading()));
   },
 });

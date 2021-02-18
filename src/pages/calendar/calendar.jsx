@@ -59,6 +59,9 @@ const CalendarScreen = (props) => {
           <Entypo name="menu" size={30}/>
         </TouchableOpacity>
         <Text style={commonStyles.headerTitle}>Расписание</Text>
+        <TouchableOpacity style={styles.reloadBtn} onPress={fetchOneRegistration.bind(this, moment(activeDate).format(`YYYY-MM-DD`))}>
+          <Text>Reload</Text>
+        </TouchableOpacity>
       </View>
       {isLoading && <Loading/>}
       <Agenda style={styles.agenda}/>

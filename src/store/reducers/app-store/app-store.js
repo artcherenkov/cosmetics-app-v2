@@ -34,14 +34,19 @@ const appStore = (state = initialState, action) => {
       };
     }
     case ActionType.LOAD_ONE_REGISTRATION: {
+      const { reg, date } = action.payload;
+
       const oldEventsList = state.rawRegistrations.event_list;
-      const eventListToInsert = action.payload.event_list;
+      const eventListToInsert = reg.event_list;
       const newEventsList = [...oldEventsList, ...eventListToInsert];
 
       const rawRegistrations = state.rawRegistrations;
       rawRegistrations.event_list = newEventsList;
 
-      const registration = adaptRegsToClient(action.payload);
+      let registration = adaptRegsToClient(reg);
+      if (!Object.keys(registration).length) {
+        registration = { [date]: {} };
+      }
       return {
         ...state,
         rawRegistrations,

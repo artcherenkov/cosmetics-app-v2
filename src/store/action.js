@@ -21,9 +21,9 @@ export const loadRegistrations = (regs) => ({
   payload: regs,
 });
 
-export const loadOneRegistration = (reg) => ({
+export const loadOneRegistration = (reg, date) => ({
   type: ActionType.LOAD_ONE_REGISTRATION,
-  payload: reg,
+  payload: { reg, date },
 });
 
 export const loadUser = (user) => ({

@@ -38,7 +38,7 @@ export default StyleSheet.create({
     width: `100%`,
     justifyContent: `space-around`,
     zIndex: -1,
-    marginBottom: 30,
+    marginBottom: 50,
   },
   dateContainer: {
     alignItems: `center`,

@@ -8,7 +8,8 @@ const initialState = {
 const appUser = (state = initialState, action) => {
   switch (action.type) {
     case ActionType.AUTHENTICATE: {
-      return { ...state, isLoggedIn: true };
+      const { token } = action.payload;
+      return { ...state, isLoggedIn: true, token };
     }
     default:
       return state;

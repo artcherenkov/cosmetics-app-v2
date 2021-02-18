@@ -7,7 +7,6 @@ import moment from "moment";
 import { getDurationString } from "../../../../utils/common";
 
 const DateSectionIos = ({ calendarState, onDateChange }) => {
-  console.log(calendarState);
   return (
     <View style={styles.dateControlsContainer}>
       {Platform.OS === `ios` && <View style={{ width: `40%` }}>

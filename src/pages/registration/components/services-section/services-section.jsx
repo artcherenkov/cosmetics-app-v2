@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Text, ScrollView, View, TextInput } from 'react-native';
+import { Text, ScrollView, View, TextInput, Button } from 'react-native';
 
 import Picker from "../../../../components/picker/picker";
 import styles from "./styles";
@@ -13,7 +13,7 @@ const getInitialValues = (clientServices) => {
     }, {});
 };
 
-const ServicesSection = ({ clientServices, cost, services, handleServiceChange, handleServiceCostChange }) => {
+const ServicesSection = ({ clientServices, cost, services, handleServiceChange, handleServiceCostChange, handleServiceAdd }) => {
   const [inputValues, setInputValues] = useState(getInitialValues(clientServices));
 
   useEffect(() => {
@@ -31,7 +31,10 @@ const ServicesSection = ({ clientServices, cost, services, handleServiceChange, 
 
   return (
     <ScrollView style={styles.servicesContainer}>
-      <Text style={styles.cost}>&#8381; {cost.toLocaleString()}</Text>
+      <View style={styles.headerContainer}>
+        <Text style={styles.cost}>&#8381; {cost.toLocaleString()}</Text>
+        <Button title="Добавить услугу" onPress={handleServiceAdd}/>
+      </View>
       {clientServices.map((service, i) => (
         <View style={styles.serviceContainer} key={`item-${i}`}>
           <View style={styles.pickerContainer}>
@@ -57,11 +60,12 @@ const ServicesSection = ({ clientServices, cost, services, handleServiceChange, 
 };
 
 ServicesSection.propTypes = {
-  cost: PropTypes.number.isRequired,
+  cost: PropTypes.oneOfType([PropTypes.string.isRequired, PropTypes.number.isRequired]),
   services: PropTypes.array.isRequired,
   clientServices: PropTypes.array.isRequired,
   handleServiceChange: PropTypes.func.isRequired,
   handleServiceCostChange: PropTypes.func.isRequired,
+  handleServiceAdd: PropTypes.func.isRequired,
 };
 
 export default ServicesSection;

@@ -5,6 +5,11 @@ export default StyleSheet.create({
     margin: 15,
     flex: 1,
   },
+  headerContainer: {
+    flexDirection: `row`,
+    alignItems: `center`,
+    marginBottom: 20,
+  },
   serviceContainer: {
     flexWrap: `wrap`,
     flexDirection: `row`,
@@ -13,7 +18,7 @@ export default StyleSheet.create({
   },
   cost: {
     fontSize: 22,
-    marginBottom: 20,
+    marginRight: 10,
   },
   pickerContainer: {
     flexGrow: 1,

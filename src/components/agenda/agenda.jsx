@@ -21,11 +21,13 @@ const getHourStyles = (index) => {
 const formatWithLeadingZero = (number) => number < 10 ? `0${number}:00` : `${number}:00`;
 
 const Agenda = ({ style, registrations, activeDate }) => {
-  let activeDateEvents = registrations ? registrations[moment(activeDate).format(`YYYY-MM-DD`)] : null;
+  let activeDateEvents = registrations ? registrations[moment(activeDate).format(`YYYY-MM-DD`)] : {};
 
   useEffect(() => {
-    activeDateEvents = registrations ? registrations[moment(activeDate).format(`YYYY-MM-DD`)] : null;
+    activeDateEvents = registrations ? registrations[moment(activeDate).format(`YYYY-MM-DD`)] : {};
   }, [activeDate]);
+
+  const isActiveDateEventsNotEmpty = activeDateEvents && !!Object.keys(activeDateEvents).length;
 
   return (
     <ScrollView style={[{ ...style }, styles.agendaContainer]}>
@@ -37,7 +39,7 @@ const Agenda = ({ style, registrations, activeDate }) => {
           <View key={`hour-${i}`} style={getHourStyles(i)}/>
         </View>
       ))}
-      {activeDateEvents && activeDateEvents.eventList.map((registration, i) => (
+      {isActiveDateEventsNotEmpty && activeDateEvents.eventList.map((registration, i) => (
         <ClientRegistration key={`reg-${i}`} registration={registration} />
       ))}
     </ScrollView>

@@ -1,5 +1,4 @@
 import { authenticate, loadRegistrations, loadOneRegistration, setError, loadUser, loadServices } from "./action";
-import { adaptRegsToClient } from "../core/adapter/registrations";
 import moment from "moment";
 
 export const auth = (credentials, endpoint) => (dispatch, _getState, api) => {
@@ -33,7 +32,7 @@ export const fetchOneRegistration = (date) => (dispatch, getState, api) => {
     api.get(`/api/v1/event/get_one/${date}`, {
       headers: { Authorization: getState().USER.token },
     })
-      .then(({ data }) => dispatch(loadOneRegistration(data)))
+      .then(({ data }) => dispatch(loadOneRegistration(data, date)))
       .catch((err) => console.log(err))
   );
 };
@@ -49,7 +48,6 @@ export const fetchServices = () => (dispatch, getState, api) => {
 };
 
 export const updateRegistration = (data) => (dispatch, getState, api) => {
-  console.log(data);
   return (
     api.post(`/api/v1/event/update`, data, {
       headers: { Authorization: getState().USER.token },
