@@ -40,7 +40,10 @@ export default StyleSheet.create({
     zIndex: -1,
     marginBottom: 50,
   },
-  dateContainer: {
+  dateView: {
+    width: 148,
+  },
+  intervalView: {
     alignItems: `center`,
   },
   dateControlsContainer: {
@@ -59,12 +62,13 @@ export default StyleSheet.create({
   dateControl: {
     flexDirection: `row`,
     alignItems: `center`,
-    backgroundColor: `white`,
+    backgroundColor: `rgb(228, 228, 228)`,
     borderRadius: 5,
     height: 35,
     padding: 5,
-    borderWidth: 1,
-    borderColor: `#808080`,
+  },
+  dateControlLeft: {
+    marginRight: 8,
   },
   durationControl: {
     width: 68,
@@ -72,7 +76,7 @@ export default StyleSheet.create({
     borderWidth: 0,
   },
   date: {
-    fontSize: 16,
+    fontSize: 17,
     textAlign: `center`,
     width: `100%`,
   },

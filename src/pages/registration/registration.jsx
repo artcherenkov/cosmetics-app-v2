@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
-import { View, Text, TouchableOpacity, Button } from 'react-native';
+import { Platform, View, Text, TouchableOpacity, Button } from 'react-native';
 import Feather from "react-native-vector-icons/Feather";
 import moment from "moment";
 
@@ -19,7 +18,9 @@ import { renameKeysCamelToSnake } from "../../core/utils";
 import Loading from "../../components/loading/loading";
 
 const findRegistration = (rawRegistrations, registrationId) => {
-  return rawRegistrations.event_list.find((item) => item.record_id === registrationId);
+  return rawRegistrations.event_list.find(
+    (item) => item.record_id === registrationId,
+  );
 };
 const getActiveRegistration = (registrations, activeDate, id) => {
   const formattedDate = moment(activeDate).format(`YYYY-MM-DD`);
@@ -67,24 +68,43 @@ const RegistrationScreen = ({
     }
   }, [fetchServices]);
 
-  const registration = getActiveRegistration(registrations, activeDate, activeRegistration);
+  const registration = getActiveRegistration(
+    registrations,
+    activeDate,
+    activeRegistration,
+  );
   const { time, duration } = registration;
 
-  const [calendarState, setCalendarState] = useState({ date: moment(time).toISOString(), duration });
-  const [clientServices, setClientServices] = useState({ services: registration.services, cost: registration.cost });
+  const [isEdited, setIsEdited] = useState(false);
+  const [calendarState, setCalendarState] = useState({
+    date: moment(time).toISOString(),
+    duration,
+  });
+  const [clientServices, setClientServices] = useState({
+    services: registration.services,
+    cost: registration.cost,
+  });
 
   const handleDateChange = (event, selectedDate) => {
-    setCalendarState((prevState) => ({ ...prevState, date: selectedDate || moment().toISOString() }));
+    setIsEdited(true);
+    setCalendarState((prevState) => ({
+      ...prevState,
+      date: selectedDate || moment().toISOString(),
+    }));
   };
 
   const handleServiceAdd = () => {
+    setIsEdited(true);
     setClientServices((prevState) => ({
       ...prevState,
       services: [...prevState.services, { title: `Новая услуга`, cost: `0` }],
     }));
   };
   const handleServiceChange = (newItem, oldItem) => {
-    const index = clientServices.services.findIndex(item => item.id === oldItem.id);
+    setIsEdited(true);
+    const index = clientServices.services.findIndex(
+      (item) => item.id === oldItem.id,
+    );
     setClientServices((prevState) => {
       const newServices = [
         ...prevState.services.slice(0, index),
@@ -101,9 +121,13 @@ const RegistrationScreen = ({
     });
   };
   const handleServiceCostChange = (newData) => {
+    setIsEdited(true);
     setClientServices((prevState) => {
       const services = prevState.services;
-      const newServices = services.map((service) => ({ ...service, cost: parseInt(newData[service.id]) }));
+      const newServices = services.map((service) => ({
+        ...service,
+        cost: parseInt(newData[service.id]),
+      }));
       return {
         services: newServices,
         cost: newServices.reduce((acc, item) => {
@@ -115,27 +139,39 @@ const RegistrationScreen = ({
   };
 
   const handleSaveButtonClick = () => {
-    updateRegistration({
-      ...findRegistration(rawRegistrations, registration.id),
-      ...createServiceList(clientServices.services),
-      time: moment(calendarState.date).toISOString(true),
-    }, navigation, activeDate);
+    updateRegistration(
+      {
+        ...findRegistration(rawRegistrations, registration.id),
+        ...createServiceList(clientServices.services),
+        time: moment(calendarState.date).toISOString(true),
+      },
+      navigation,
+      activeDate,
+    );
   };
 
   return (
     <View style={commonStyles.page}>
       <View style={commonStyles.header}>
-        <TouchableOpacity style={{ flexDirection: `row`, alignItems: `center` }} onPress={() => navigation.goBack()}>
-          <Feather name="arrow-left" size={25} color={Color.PRIMARY}/>
-          <Text style={{ fontSize: 16, color: Color.PRIMARY }}>{moment(activeDate).format(`D MMM`)}</Text>
+        <TouchableOpacity
+          style={{ flexDirection: `row`, alignItems: `center` }}
+          onPress={() => navigation.goBack()}
+        >
+          <Feather name="arrow-left" size={25} color={Color.PRIMARY} />
+          <Text style={{ fontSize: 16, color: Color.PRIMARY }}>
+            {moment(activeDate).format(`D MMM`)}
+          </Text>
         </TouchableOpacity>
         <Text style={commonStyles.headerTitle}>Регистрация</Text>
       </View>
       <View style={styles.container}>
-        <Text style={styles.title}>
-          {registration.clientName}
-        </Text>
-        <DateSectionIos calendarState={calendarState} onDateChange={handleDateChange}/>
+        <Text style={styles.title}>{registration.clientName}</Text>
+        {Platform.OS === `ios` && (
+          <DateSectionIos
+            calendarState={calendarState}
+            onDateChange={handleDateChange}
+          />
+        )}
         <ServicesSection
           services={services}
           clientServices={clientServices.services}
@@ -146,7 +182,13 @@ const RegistrationScreen = ({
           handleServiceAdd={handleServiceAdd}
         />
         <View style={styles.controls}>
-          {isLoading ? <Loading/> : <Button title="Сохранить" onPress={handleSaveButtonClick}/>}
+          {isLoading
+            ? <Loading />
+            : <Button
+                title="Сохранить"
+                onPress={handleSaveButtonClick}
+                disabled={!isEdited}
+              />}
         </View>
       </View>
     </View>

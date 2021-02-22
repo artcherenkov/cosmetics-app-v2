@@ -52,7 +52,7 @@ export const updateRegistration = (data) => (dispatch, getState, api) => {
     api.post(`/api/v1/event/update`, data, {
       headers: { Authorization: getState().USER.token },
     })
-      .then((res) => console.log(res))
+      .then((res) => {})
       .catch((err) => console.log(err))
   );
 };

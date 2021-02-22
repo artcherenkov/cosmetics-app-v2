@@ -21,11 +21,17 @@ const getActiveDates = (activeDate) => {
   return [
     {
       startDate: today,
-      dateContainerStyle: [styles.dateContainerStyle, { borderColor: Color.PRIMARY }],
+      dateContainerStyle: [
+        styles.dateContainerStyle,
+        { borderColor: Color.PRIMARY },
+      ],
     },
     {
       startDate: moment(activeDate),
-      dateContainerStyle: [styles.dateContainerStyle, { borderColor: Color.ORANGE }],
+      dateContainerStyle: [
+        styles.dateContainerStyle,
+        { borderColor: Color.ORANGE },
+      ],
     },
   ];
 };
@@ -59,7 +65,13 @@ const CalendarScreen = (props) => {
           <Entypo name="menu" size={30}/>
         </TouchableOpacity>
         <Text style={commonStyles.headerTitle}>Расписание</Text>
-        <TouchableOpacity style={styles.reloadBtn} onPress={fetchOneRegistration.bind(this, moment(activeDate).format(`YYYY-MM-DD`))}>
+        <TouchableOpacity
+          style={styles.reloadBtn}
+          onPress={fetchOneRegistration.bind(
+            this,
+            moment(activeDate).format(`YYYY-MM-DD`)
+          )}
+        >
           <Text>Reload</Text>
         </TouchableOpacity>
       </View>
@@ -67,7 +79,13 @@ const CalendarScreen = (props) => {
       <Agenda style={styles.agenda}/>
       <View style={styles.calendarStripContainer}>
         <CalendarStrip
-          style={{ height: 150, paddingTop: 20, paddingBottom: 20, borderTopLeftRadius: 10, borderTopRightRadius: 10 }}
+          style={{
+            height: 150,
+            paddingTop: 20,
+            paddingBottom: 20,
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+          }}
           calendarColor={Color.BACKGROUND_BLUE}
           iconContainer={{ flex: 0.1 }}
           customDatesStyles={getActiveDates(activeDate)}
