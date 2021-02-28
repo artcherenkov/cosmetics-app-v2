@@ -2,6 +2,7 @@ import { authenticate, loadRegistrations, loadOneRegistration, setError, loadUse
 import moment from "moment";
 import { saveTokenToStorage } from "../local-storage/local-storage";
 import { getUser } from "./reducers/app-store/selectors";
+import { getToken } from "./reducers/app-user/selectors";
 
 export const auth = (credentials, endpoint) => (dispatch, _getState, api) => {
   return (
@@ -14,18 +15,24 @@ export const auth = (credentials, endpoint) => (dispatch, _getState, api) => {
   );
 };
 
-export const fetchUser = () => (dispatch, getState, api) => (
-  api.get(`/api/v1/user/me`, {
-    headers: { Authorization: getState().USER.token },
-  })
-    .then(({ data }) => dispatch(loadUser(data)))
-    .catch((err) => console.log(err))
-);
+export const fetchUser = () => (dispatch, getState, api) => {
+  const state = getState();
+  const token = getToken(state);
+  return (
+    api.get(`/api/v1/user/me`, {
+      headers: { Authorization: token },
+    })
+      .then(({ data }) => dispatch(loadUser(data)))
+      .catch((err) => console.log(err))
+  );
+};
 
 export const fetchRegistrations = () => (dispatch, getState, api) => {
+  const state = getState();
+  const token = getToken(state);
   return (
     api.get(`/api/v1/event/get/${moment().format(`YYYY-MM-DD`)}`, {
-      headers: { Authorization: getState().USER.token },
+      headers: { Authorization: token },
     })
       .then(({ data }) => dispatch(loadRegistrations(data)))
       .catch((err) => console.log(err))
@@ -33,9 +40,11 @@ export const fetchRegistrations = () => (dispatch, getState, api) => {
 };
 
 export const fetchOneRegistration = (date) => (dispatch, getState, api) => {
+  const state = getState();
+  const token = getToken(state);
   return (
     api.get(`/api/v1/event/get_one/${date}`, {
-      headers: { Authorization: getState().USER.token },
+      headers: { Authorization: token },
     })
       .then(({ data }) => dispatch(loadOneRegistration(data, date)))
       .catch((err) => console.log(err))
@@ -44,10 +53,11 @@ export const fetchOneRegistration = (date) => (dispatch, getState, api) => {
 
 export const fetchServices = () => (dispatch, getState, api) => {
   const state = getState();
+  const token = getToken(state);
   const { idBranch, idYcl } = getUser(state);
   return (
     api.get(`api/v1/event/get/services/${idBranch}/${idYcl}`, {
-      headers: { Authorization: getState().USER.token },
+      headers: { Authorization: token },
     })
       .then(({ data }) => dispatch(loadServices(data)))
       .catch((err) => console.log(err))
@@ -55,9 +65,11 @@ export const fetchServices = () => (dispatch, getState, api) => {
 };
 
 export const updateRegistration = (data) => (dispatch, getState, api) => {
+  const state = getState();
+  const token = getToken(state);
   return (
     api.post(`/api/v1/event/update`, data, {
-      headers: { Authorization: getState().USER.token },
+      headers: { Authorization: token },
     })
       .then((res) => {})
       .catch((err) => console.log(err))
