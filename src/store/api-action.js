@@ -1,6 +1,7 @@
 import { authenticate, loadRegistrations, loadOneRegistration, setError, loadUser, loadServices } from "./action";
 import moment from "moment";
 import { saveTokenToStorage } from "../local-storage/local-storage";
+import { getUser } from "./reducers/app-store/selectors";
 
 export const auth = (credentials, endpoint) => (dispatch, _getState, api) => {
   return (
@@ -42,8 +43,10 @@ export const fetchOneRegistration = (date) => (dispatch, getState, api) => {
 };
 
 export const fetchServices = () => (dispatch, getState, api) => {
+  const state = getState();
+  const { idBranch, idYcl } = getUser(state);
   return (
-    api.get(`api/v1/event/get/services/311496/918344`, {
+    api.get(`api/v1/event/get/services/${idBranch}/${idYcl}`, {
       headers: { Authorization: getState().USER.token },
     })
       .then(({ data }) => dispatch(loadServices(data)))
