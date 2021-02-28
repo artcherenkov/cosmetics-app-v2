@@ -77,7 +77,7 @@ const CalendarScreen = (props) => {
       <View style={styles.calendarStripContainer}>
         <CalendarStrip
           style={{
-            height: 150,
+            height: 120,
             paddingTop: 20,
             paddingBottom: 20,
             borderTopLeftRadius: 10,

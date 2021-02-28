@@ -7,7 +7,7 @@ export default StyleSheet.create({
     backgroundColor: Color.BACKGROUND_BLUE,
   },
   header: {
-    paddingTop: 60,
+    paddingTop: 50,
     paddingBottom: 20,
     flexDirection: `row`,
     paddingHorizontal: 10,
