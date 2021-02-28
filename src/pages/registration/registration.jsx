@@ -196,6 +196,7 @@ const RegistrationScreen = ({
 };
 
 RegistrationScreen.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
   services: PropTypes.array.isRequired,
   navigation: PropTypes.any.isRequired,
   activeDate: PropTypes.string.isRequired,
@@ -203,6 +204,7 @@ RegistrationScreen.propTypes = {
   registrations: PropTypes.object.isRequired,
   updateRegistration: PropTypes.func.isRequired,
   activeRegistration: PropTypes.number.isRequired,
+  rawRegistrations: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({

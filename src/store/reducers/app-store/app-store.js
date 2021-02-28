@@ -1,10 +1,8 @@
 import { ActionType } from "../../action";
 import { renameKeysSnakeToCamel } from "../../../core/utils";
-import { rawRegistrations } from "../../../data/registrations";
 import { rawServices } from "../../../data/services";
 import { adaptRegsToClient } from "../../../core/adapter/registrations";
 
-const parsedRegs = JSON.parse(rawRegistrations);
 const parsedServices = JSON.parse(rawServices);
 
 const adaptServicesToClient = (rawData) => {

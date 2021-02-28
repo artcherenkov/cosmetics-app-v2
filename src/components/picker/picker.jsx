@@ -5,9 +5,9 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 import styles from "./styles";
 
-// LogBox.ignoreLogs([
-//   `VirtualizedLists should never be nested`, // TODO: Remove when fixed
-// ]);
+LogBox.ignoreLogs([
+  `VirtualizedLists should never be nested`, // TODO: Remove when fixed
+]);
 
 const Picker = ({ data, initialValue, onItemChange }) => {
   const [searchValue, setSearchValue] = useState(``);
