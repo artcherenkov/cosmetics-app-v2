@@ -33,6 +33,7 @@ export default StyleSheet.create({
   },
   label: {
     fontSize: 12,
+    marginBottom: 5,
   },
   input: {
     borderWidth: 1,
@@ -40,7 +41,6 @@ export default StyleSheet.create({
     borderRadius: 5,
     height: 40,
     fontSize: 18,
-    marginVertical: 5,
     padding: 5,
   },
   invalidInput: {
@@ -48,6 +48,7 @@ export default StyleSheet.create({
   },
   errorMessage: {
     color: `red`,
+    marginTop: 5,
   },
   controlsContainer: {
     alignItems: `center`,
@@ -72,5 +73,12 @@ export default StyleSheet.create({
   },
   changeModeText: {
     color: Color.PRIMARY,
+  },
+  pickedItemTitleStyle: {
+    fontSize: 18,
+  },
+  listItemTitleStyle: {
+    fontSize: 18,
+    paddingHorizontal: 5,
   },
 });

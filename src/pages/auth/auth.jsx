@@ -17,6 +17,8 @@ import styles from './styles';
 import { auth } from "../../store/api-action";
 import { getError, getIsLoading } from "../../store/reducers/app-state/selectors";
 import { resetError, resetLoading, setLoading } from "../../store/action";
+import Picker from "../../components/picker/picker";
+import leaders from "../../data/leaders";
 
 export const AuthField = {
   REGISTER: [
@@ -126,6 +128,10 @@ const AuthScreen = ({ onSubmit, resetError, isLoading, error }) => {
     });
   }, [register, isLogin]);
 
+  const handleItemChange = (input) => (newItem) => {
+    setValue(input.name, newItem.title);
+  };
+
   const getInputStyles = (isValid) => {
     const style = [styles.input];
     if (!isValid) {
@@ -144,13 +150,26 @@ const AuthScreen = ({ onSubmit, resetError, isLoading, error }) => {
         {inputsToUse.map((input) => (
           <View style={styles.inputContainer} key={`input-${isLogin + input.name}`}>
             <Text style={styles.label}>{input.label}</Text>
-            <TextInput
-              style={getInputStyles(!errors[input.name])}
-              autoCorrect={false}
-              autoCapitalize="none"
-              placeholder={input.placeholder}
-              onChangeText={handleInputChange(input)}
-            />
+            {input.name === `leader` && (
+              <Picker
+                data={leaders}
+                initialValue={{ title: `Выберите руководителя` }}
+                onItemChange={handleItemChange(input)}
+                isPlaceholder
+                pickerContainerStyle={getInputStyles(!errors[input.name])}
+                pickedItemTitleStyle={styles.pickedItemTitleStyle}
+                listItemTitleStyle={styles.listItemTitleStyle}
+              />
+            )}
+            {![`leader`].includes(input.name) && (
+              <TextInput
+                style={getInputStyles(!errors[input.name])}
+                autoCorrect={false}
+                autoCapitalize="none"
+                placeholder={input.placeholder}
+                onChangeText={handleInputChange(input)}
+              />
+            )}
             {errors[input.name] && (
               <Text style={styles.errorMessage}>{errors[input.name].message}</Text>
             )}
