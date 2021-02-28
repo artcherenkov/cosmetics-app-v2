@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "cosmetics-app",
-    "slug": "cosmetics-app",
+    "name": "Подружки",
+    "slug": "podruge",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -17,7 +17,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false,
+      "buildNumber": "1.0.0",
+      "bundleIdentifier": "com.irina.podruge",
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
