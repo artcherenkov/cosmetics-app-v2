@@ -75,7 +75,7 @@ const Picker = ({ data, initialValue, onItemChange, isPlaceholder, pickerContain
 };
 
 Picker.propTypes = {
-  isPlaceholder: PropTypes.bool.isRequired,
+  isPlaceholder: PropTypes.bool,
   pickerContainerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   pickedItemTitleStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   listItemTitleStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
