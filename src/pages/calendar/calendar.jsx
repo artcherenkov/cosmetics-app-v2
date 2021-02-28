@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { View, Text, TouchableOpacity } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import moment from "moment";
 
 import CalendarStrip from 'react-native-calendar-strip';
@@ -58,6 +59,8 @@ const CalendarScreen = (props) => {
     }
   }, [activeDate]);
 
+  const handleReloadBtnPress = () => fetchOneRegistration(moment(activeDate).format(`YYYY-MM-DD`));
+
   return (
     <View style={commonStyles.page}>
       <View style={commonStyles.header}>
@@ -65,14 +68,8 @@ const CalendarScreen = (props) => {
           <Entypo name="menu" size={30}/>
         </TouchableOpacity>
         <Text style={commonStyles.headerTitle}>Расписание</Text>
-        <TouchableOpacity
-          style={styles.reloadBtn}
-          onPress={fetchOneRegistration.bind(
-            this,
-            moment(activeDate).format(`YYYY-MM-DD`)
-          )}
-        >
-          <Text>Reload</Text>
+        <TouchableOpacity style={styles.reloadBtn} onPress={handleReloadBtnPress}>
+          <AntDesign name="sync" size={15} color="#282828" />
         </TouchableOpacity>
       </View>
       {isLoading && <Loading/>}

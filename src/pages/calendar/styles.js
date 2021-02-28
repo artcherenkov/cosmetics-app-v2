@@ -23,6 +23,11 @@ export default StyleSheet.create({
     borderRadius: 10,
   },
   reloadBtn: {
-    marginLeft: 10,
+    marginLeft: `auto`,
+    marginRight: 10,
+    padding: 5,
+    borderWidth: 1,
+    borderColor: `#282828`,
+    borderRadius: 5,
   },
 });
