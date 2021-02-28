@@ -9,7 +9,7 @@ LogBox.ignoreLogs([
   `VirtualizedLists should never be nested`, // TODO: Remove when fixed
 ]);
 
-const Picker = ({ data, initialValue, onItemChange }) => {
+const Picker = ({ data, initialValue, onItemChange, isPlaceholder, pickerContainerStyles, pickedItemTitleStyle, listItemTitleStyle }) => {
   const [searchValue, setSearchValue] = useState(``);
   const [pickedItem, setPickedItem] = useState(initialValue || { title: `Новая услуга` });
   const [isPickerOpened, setIsPickerOpened] = useState(false);
@@ -29,7 +29,7 @@ const Picker = ({ data, initialValue, onItemChange }) => {
   const renderItem = ({ item }) => (
     <TouchableOpacity onPress={handleItemChange.bind(this, item)}>
       <View style={styles.listItem}>
-        <Text>{item.title}</Text>
+        <Text style={listItemTitleStyle}>{item.title}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -39,9 +39,14 @@ const Picker = ({ data, initialValue, onItemChange }) => {
     : [styles.pickedValueContainer, styles.pickedValueContainerActive];
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={getPickedValueContainerStyles()} onPress={togglePicker}>
-        <Text style={styles.pickedValue}>{pickedItem.title}</Text>
+    <View style={[styles.container]}>
+      <TouchableOpacity
+        style={[getPickedValueContainerStyles(), pickerContainerStyles]}
+        onPress={togglePicker}
+      >
+        {pickedItem.title === initialValue.title && isPlaceholder
+          ? <Text style={[styles.pickedValue, pickedItemTitleStyle, { opacity: 0.3 }]}>{pickedItem.title}</Text>
+          : <Text style={[styles.pickedValue, pickedItemTitleStyle]}>{pickedItem.title}</Text>}
         <FontAwesome style={styles.icon} name="unsorted" size={15} color="#808080"/>
       </TouchableOpacity>
       {isPickerOpened && <View style={styles.pickerContainer}>
