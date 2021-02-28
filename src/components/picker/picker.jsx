@@ -9,7 +9,7 @@ LogBox.ignoreLogs([
   `VirtualizedLists should never be nested`, // TODO: Remove when fixed
 ]);
 
-const Picker = ({ data, initialValue, onItemChange, isPlaceholder, pickerContainerStyles, pickedItemTitleStyle, listItemTitleStyle }) => {
+const Picker = ({ data, initialValue, onItemChange, isPlaceholder, pickerContainerStyle, pickedItemTitleStyle, listItemTitleStyle }) => {
   const [searchValue, setSearchValue] = useState(``);
   const [pickedItem, setPickedItem] = useState(initialValue || { title: `Новая услуга` });
   const [isPickerOpened, setIsPickerOpened] = useState(false);
@@ -41,7 +41,7 @@ const Picker = ({ data, initialValue, onItemChange, isPlaceholder, pickerContain
   return (
     <View style={[styles.container]}>
       <TouchableOpacity
-        style={[getPickedValueContainerStyles(), pickerContainerStyles]}
+        style={[getPickedValueContainerStyles(), pickerContainerStyle]}
         onPress={togglePicker}
       >
         {pickedItem.title === initialValue.title && isPlaceholder
@@ -61,7 +61,7 @@ const Picker = ({ data, initialValue, onItemChange, isPlaceholder, pickerContain
         </View>
         <View>
           <FlatList
-            data={data.slice().filter((item) => item.title.toLowerCase().includes(searchValue))}
+            data={data.slice().filter((item) => item.title.toLowerCase().includes(searchValue.toLowerCase()))}
             style={styles.list}
             initialNumToRender={20}
             removeClippedSubviews={true}
@@ -75,6 +75,10 @@ const Picker = ({ data, initialValue, onItemChange, isPlaceholder, pickerContain
 };
 
 Picker.propTypes = {
+  isPlaceholder: PropTypes.bool.isRequired,
+  pickerContainerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  pickedItemTitleStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  listItemTitleStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   data: PropTypes.array.isRequired,
   initialValue: PropTypes.object.isRequired,
   onItemChange: PropTypes.func.isRequired,
