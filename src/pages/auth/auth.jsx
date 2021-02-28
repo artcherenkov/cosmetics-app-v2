@@ -19,6 +19,7 @@ import { getError, getIsLoading } from "../../store/reducers/app-state/selectors
 import { resetError, resetLoading, setLoading } from "../../store/action";
 import Picker from "../../components/picker/picker";
 import leaders from "../../data/leaders";
+import roles from "../../data/roles";
 
 export const AuthField = {
   REGISTER: [
@@ -128,8 +129,12 @@ const AuthScreen = ({ onSubmit, resetError, isLoading, error }) => {
     });
   }, [register, isLogin]);
 
-  const handleItemChange = (input) => (newItem) => {
+  const handleLeaderChange = (input) => (newItem) => {
     setValue(input.name, newItem.title);
+  };
+
+  const handleRolesChange = (input) => (newItem) => {
+    setValue(input.name, newItem);
   };
 
   const getInputStyles = (isValid) => {
@@ -154,14 +159,26 @@ const AuthScreen = ({ onSubmit, resetError, isLoading, error }) => {
               <Picker
                 data={leaders}
                 initialValue={{ title: `Выберите руководителя` }}
-                onItemChange={handleItemChange(input)}
+                onItemChange={handleLeaderChange(input)}
                 isPlaceholder
                 pickerContainerStyle={getInputStyles(!errors[input.name])}
                 pickedItemTitleStyle={styles.pickedItemTitleStyle}
                 listItemTitleStyle={styles.listItemTitleStyle}
               />
             )}
-            {![`leader`].includes(input.name) && (
+            {input.name === `role` && (
+              <Picker
+                data={roles}
+                initialValue={{ title: `Выберите ваши должности` }}
+                onItemChange={handleRolesChange(input)}
+                isPlaceholder
+                isMultiple
+                pickerContainerStyle={getInputStyles(!errors[input.name])}
+                pickedItemTitleStyle={styles.pickedItemTitleStyle}
+                listItemTitleStyle={styles.listItemTitleStyle}
+              />
+            )}
+            {![`leader`, `role`].includes(input.name) && (
               <TextInput
                 style={getInputStyles(!errors[input.name])}
                 autoCorrect={false}

@@ -11,6 +11,7 @@ export default StyleSheet.create({
   },
   listItem: {
     padding: 5,
+    flexDirection: `row`,
   },
   searchWrapper: {
     padding: 5,

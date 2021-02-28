@@ -79,6 +79,6 @@ export default StyleSheet.create({
   },
   listItemTitleStyle: {
     fontSize: 18,
-    paddingHorizontal: 5,
+    marginHorizontal: 5,
   },
 });
