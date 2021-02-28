@@ -1,10 +1,14 @@
 import { authenticate, loadRegistrations, loadOneRegistration, setError, loadUser, loadServices } from "./action";
 import moment from "moment";
+import { saveTokenToStorage } from "../local-storage/local-storage";
 
 export const auth = (credentials, endpoint) => (dispatch, _getState, api) => {
   return (
     api.post(`/api/v1/user/${endpoint}`, credentials)
-      .then(({ data }) => dispatch(authenticate(data)))
+      .then(({ data }) => {
+        dispatch(authenticate(data));
+        saveTokenToStorage(data.token);
+      })
       .catch((err) => dispatch(setError(err)))
   );
 };

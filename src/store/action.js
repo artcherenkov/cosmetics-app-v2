@@ -13,6 +13,7 @@ export const ActionType = {
   RESET_ERROR: `RESET_ERROR`,
   // user
   AUTHENTICATE: `AUTHENTICATE`,
+  LOGOUT: `LOGOUT`,
 };
 
 // store
@@ -68,4 +69,7 @@ export const resetError = () => ({
 export const authenticate = (credentials) => ({
   type: ActionType.AUTHENTICATE,
   payload: credentials,
+});
+export const logout = () => ({
+  type: ActionType.LOGOUT,
 });

@@ -11,6 +11,7 @@ import thunk from 'redux-thunk';
 import App from './app/app';
 import rootReducer from './store/reducers/root-reducer';
 import { createAPI } from './services/api';
+import { getTokenFromStorage, dispatchToken } from "./local-storage/local-storage";
 
 moment.locale(`ru`);
 
@@ -29,4 +30,6 @@ const Index = () => (
   </Provider>
 );
 
-registerRootComponent(Index);
+getTokenFromStorage()
+  .then((token) => dispatchToken(store.dispatch, token))
+  .then(() => registerRootComponent(Index));
