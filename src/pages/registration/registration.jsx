@@ -12,10 +12,11 @@ import DateSectionIos from "./components/date-section/date-section";
 import ServicesSection from "./components/services-section/services-section";
 import { getRegistrations } from "../../store/reducers/app-store/selectors";
 import { getActiveDate, getIsLoading } from "../../store/reducers/app-state/selectors";
-import { fetchOneRegistration, fetchServices, updateRegistration } from "../../store/api-action";
+import { bookAgain, fetchOneRegistration, fetchServices, updateRegistration } from "../../store/api-action";
 import { changeActiveDate, resetLoading, setLoading } from "../../store/action";
 import { renameKeysCamelToSnake } from "../../core/utils";
 import Loading from "../../components/loading/loading";
+import Popup from "./components/popup/popup";
 
 const findRegistration = (rawRegistrations, registrationId) => {
   return rawRegistrations.event_list.find(
@@ -60,6 +61,7 @@ const RegistrationScreen = ({
   services,
   fetchServices,
   updateRegistration,
+  bookAgain,
   rawRegistrations,
 }) => {
   useEffect(() => {
@@ -84,6 +86,7 @@ const RegistrationScreen = ({
     services: registration.services,
     cost: registration.cost,
   });
+  const [isPopupShown, setIsPopupShown] = useState(false);
 
   const handleDateChange = (event, selectedDate) => {
     setIsEdited(true);
@@ -92,6 +95,7 @@ const RegistrationScreen = ({
       date: selectedDate || moment().toISOString(),
     }));
   };
+  const onClosePopup = () => setIsPopupShown(false);
 
   const handleServiceAdd = () => {
     setIsEdited(true);
@@ -150,6 +154,15 @@ const RegistrationScreen = ({
     );
   };
 
+  const onBookDateSubmit = (dateToBook) => {
+    setIsPopupShown(false);
+    bookAgain({
+      ...findRegistration(rawRegistrations, registration.id),
+      ...createServiceList(clientServices.services),
+      time: moment(dateToBook).toISOString(true),
+    });
+  };
+
   return (
     <View style={commonStyles.page}>
       <View style={commonStyles.header}>
@@ -157,7 +170,7 @@ const RegistrationScreen = ({
           style={{ flexDirection: `row`, alignItems: `center` }}
           onPress={() => navigation.goBack()}
         >
-          <Feather name="arrow-left" size={25} color={Color.PRIMARY} />
+          <Feather name="arrow-left" size={25} color={Color.PRIMARY}/>
           <Text style={{ fontSize: 16, color: Color.PRIMARY }}>
             {moment(activeDate).format(`D MMM`)}
           </Text>
@@ -172,6 +185,11 @@ const RegistrationScreen = ({
             onDateChange={handleDateChange}
           />
         )}
+        <View style={styles.bookAgainContainer}>
+          <TouchableOpacity style={styles.bookAgainBtn} onPress={setIsPopupShown.bind(null, true)}>
+            <Text style={styles.bookAgainTitle}>Перезаписать клиента</Text>
+          </TouchableOpacity>
+        </View>
         <ServicesSection
           services={services}
           clientServices={clientServices.services}
@@ -183,14 +201,15 @@ const RegistrationScreen = ({
         />
         <View style={styles.controls}>
           {isLoading
-            ? <Loading />
+            ? <Loading/>
             : <Button
-                title="Сохранить"
-                onPress={handleSaveButtonClick}
-                disabled={!isEdited}
-              />}
+              title="Сохранить"
+              onPress={handleSaveButtonClick}
+              disabled={!isEdited}
+            />}
         </View>
       </View>
+      {isPopupShown && <Popup onSubmit={onBookDateSubmit} onClosePopup={onClosePopup} />}
     </View>
   );
 };
@@ -233,6 +252,11 @@ const mapDispatchToProps = (dispatch) => ({
       .then(() => dispatch(fetchOneRegistration(oldDate)))
       .then(() => dispatch(changeActiveDate(date)))
       .then(() => dispatch(fetchOneRegistration(date)))
+      .then(() => dispatch(resetLoading()));
+  },
+  bookAgain(data) {
+    dispatch(setLoading());
+    dispatch(bookAgain(data))
       .then(() => dispatch(resetLoading()));
   },
 });

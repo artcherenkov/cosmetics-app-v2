@@ -75,3 +75,15 @@ export const updateRegistration = (data) => (dispatch, getState, api) => {
       .catch((err) => console.log(err))
   );
 };
+
+export const bookAgain = (data) => (dispatch, getState, api) => {
+  const state = getState();
+  const token = getToken(state);
+  return (
+    api.post(`/api/v1/event/create`, data, {
+      headers: { Authorization: token },
+    })
+      .then((res) => {})
+      .catch((err) => console.log(err.response))
+  );
+};
