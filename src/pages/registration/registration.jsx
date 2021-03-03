@@ -16,7 +16,7 @@ import { bookAgain, fetchOneRegistration, fetchServices, updateRegistration } fr
 import { changeActiveDate, resetLoading, setLoading } from "../../store/action";
 import { renameKeysCamelToSnake } from "../../core/utils";
 import Loading from "../../components/loading/loading";
-import Popup from "./components/popup/popup";
+import Popup from "../../components/book-again-form/components/popup/popup";
 
 const findRegistration = (rawRegistrations, registrationId) => {
   return rawRegistrations.event_list.find(
@@ -52,18 +52,19 @@ const createServiceList = (services) => {
   };
 };
 
-const RegistrationScreen = ({
-  isLoading,
-  navigation,
-  registrations,
-  activeRegistration,
-  activeDate,
-  services,
-  fetchServices,
-  updateRegistration,
-  bookAgain,
-  rawRegistrations,
-}) => {
+const RegistrationScreen = (props) => {
+  const {
+    isLoading,
+    navigation,
+    registrations,
+    activeRegistration,
+    activeDate,
+    services,
+    fetchServices,
+    updateRegistration,
+    bookAgain,
+    rawRegistrations,
+  } = props;
   useEffect(() => {
     if (!services) {
       fetchServices();
@@ -83,6 +84,10 @@ const RegistrationScreen = ({
     duration,
   });
   const [clientServices, setClientServices] = useState({
+    services: registration.services,
+    cost: registration.cost,
+  });
+  const [formClientServices, setFormClientServices] = useState({
     services: registration.services,
     cost: registration.cost,
   });
@@ -142,6 +147,48 @@ const RegistrationScreen = ({
     });
   };
 
+  const handleFormServiceAdd = () => {
+    setFormClientServices((prevState) => ({
+      ...prevState,
+      services: [...prevState.services, { title: `Новая услуга`, cost: `0` }],
+    }));
+  };
+  const handleFormServiceChange = (newItem, oldItem) => {
+    const index = formClientServices.services.findIndex(
+      (item) => item.id === oldItem.id,
+    );
+    setFormClientServices((prevState) => {
+      const newServices = [
+        ...prevState.services.slice(0, index),
+        newItem,
+        ...prevState.services.slice(index + 1),
+      ];
+      return {
+        services: newServices,
+        cost: newServices.reduce((acc, item) => {
+          acc += item.cost;
+          return acc;
+        }, 0),
+      };
+    });
+  };
+  const handleFormServiceCostChange = (newData) => {
+    setFormClientServices((prevState) => {
+      const services = prevState.services;
+      const newServices = services.map((service) => ({
+        ...service,
+        cost: parseInt(newData[service.id]),
+      }));
+      return {
+        services: newServices,
+        cost: newServices.reduce((acc, item) => {
+          acc += item.cost;
+          return acc;
+        }, 0),
+      };
+    });
+  };
+
   const handleSaveButtonClick = () => {
     updateRegistration(
       {
@@ -155,10 +202,9 @@ const RegistrationScreen = ({
   };
 
   const onBookDateSubmit = (dateToBook) => {
-    setIsPopupShown(false);
     bookAgain({
       ...findRegistration(rawRegistrations, registration.id),
-      ...createServiceList(clientServices.services),
+      ...createServiceList(formClientServices.services),
       time: moment(dateToBook).toISOString(true),
     });
   };
@@ -209,7 +255,19 @@ const RegistrationScreen = ({
             />}
         </View>
       </View>
-      {isPopupShown && <Popup onSubmit={onBookDateSubmit} onClosePopup={onClosePopup} />}
+      {isPopupShown && (
+        <Popup onSubmit={onBookDateSubmit} onClosePopup={onClosePopup}>
+          <ServicesSection
+            services={services}
+            clientServices={formClientServices.services}
+            cost={formClientServices.cost}
+            registration={registration}
+            handleServiceChange={handleFormServiceChange}
+            handleServiceCostChange={handleFormServiceCostChange}
+            handleServiceAdd={handleFormServiceAdd}
+          />
+        </Popup>
+      )}
     </View>
   );
 };

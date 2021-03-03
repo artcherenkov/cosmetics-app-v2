@@ -114,32 +114,4 @@ export default StyleSheet.create({
     color: `white`,
     fontWeight: `bold`,
   },
-  popupContainer: {
-    position: `absolute`,
-    width: `100%`,
-    height: `100%`,
-    backgroundColor: `rgba(0, 0, 0, 0.3)`,
-    alignItems: `center`,
-    justifyContent: `center`,
-  },
-  popup: {
-    padding: 20,
-    width: `70%`,
-    borderRadius: 10,
-    backgroundColor: `white`,
-    alignItems: `center`,
-  },
-  popupHeader: {
-    fontSize: 18,
-    textAlign: `center`,
-  },
-  popupContent: {
-    marginTop: 30,
-    marginBottom: 20,
-    flexDirection: `row`,
-    justifyContent: `flex-start`,
-  },
-  popupSubmit: {
-    marginTop: `auto`,
-  },
 });
