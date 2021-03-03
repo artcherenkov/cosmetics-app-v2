@@ -172,6 +172,24 @@ const RegistrationScreen = (props) => {
       };
     });
   };
+  const handleFormServiceDelete = (deletedItem) => {
+    const index = formClientServices.services.findIndex(
+      (item) => item.id === deletedItem.id,
+    );
+    setFormClientServices((prevState) => {
+      const newServices = [
+        ...prevState.services.slice(0, index),
+        ...prevState.services.slice(index + 1),
+      ];
+      return {
+        services: newServices,
+        cost: newServices.reduce((acc, item) => {
+          acc += item.cost;
+          return acc;
+        }, 0),
+      };
+    });
+  };
   const handleFormServiceCostChange = (newData) => {
     setFormClientServices((prevState) => {
       const services = prevState.services;
@@ -265,6 +283,7 @@ const RegistrationScreen = (props) => {
             handleServiceChange={handleFormServiceChange}
             handleServiceCostChange={handleFormServiceCostChange}
             handleServiceAdd={handleFormServiceAdd}
+            handleServiceDelete={handleFormServiceDelete}
           />
         </Popup>
       )}

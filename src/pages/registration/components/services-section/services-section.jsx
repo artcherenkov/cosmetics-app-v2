@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Text, ScrollView, View, TextInput, Button } from 'react-native';
+import { Text, ScrollView, View, TextInput, Button, TouchableOpacity } from 'react-native';
+import AntDesign from "react-native-vector-icons/AntDesign";
 
 import Picker from "../../../../components/picker/picker";
 import styles from "./styles";
@@ -13,7 +14,7 @@ const getInitialValues = (clientServices) => {
     }, {});
 };
 
-const ServicesSection = ({ clientServices, cost, services, handleServiceChange, handleServiceCostChange, handleServiceAdd }) => {
+const ServicesSection = ({ clientServices, cost, services, handleServiceChange, handleServiceCostChange, handleServiceAdd, handleServiceDelete }) => {
   const [inputValues, setInputValues] = useState(getInitialValues(clientServices));
 
   useEffect(() => {
@@ -37,6 +38,9 @@ const ServicesSection = ({ clientServices, cost, services, handleServiceChange, 
       </View>
       {clientServices.map((service, i) => (
         <View style={styles.serviceContainer} key={`item-${i}`}>
+          {handleServiceDelete && <TouchableOpacity style={{ marginRight: 8 }} onPress={() => handleServiceDelete(service)}>
+            <AntDesign name="delete" color="red" size={20}/>
+          </TouchableOpacity>}
           <View style={styles.pickerContainer}>
             <Picker
               data={services}
