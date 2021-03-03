@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Platform, View, Text, TouchableOpacity, Button } from 'react-native';
+import { Platform, View, Text, TouchableOpacity, Button, Alert } from 'react-native';
 import Feather from "react-native-vector-icons/Feather";
 import moment from "moment";
 
@@ -224,6 +224,9 @@ const RegistrationScreen = (props) => {
       ...findRegistration(rawRegistrations, registration.id),
       ...createServiceList(formClientServices.services),
       time: moment(dateToBook).toISOString(true),
+    }, () => {
+      Alert.alert(`Клиент успешно перезаписан`);
+      setIsPopupShown(false);
     });
   };
 
@@ -331,12 +334,13 @@ const mapDispatchToProps = (dispatch) => ({
       .then(() => dispatch(fetchOneRegistration(date)))
       .then(() => dispatch(resetLoading()));
   },
-  bookAgain(data) {
+  bookAgain(data, cb) {
     const date = moment(data.time).format(`YYYY-MM-DD`);
     dispatch(setLoading());
     dispatch(bookAgain(data))
       .then(() => dispatch(fetchOneRegistration(date)))
-      .then(() => dispatch(resetLoading()));
+      .then(() => dispatch(resetLoading()))
+      .then(cb);
   },
 });
 

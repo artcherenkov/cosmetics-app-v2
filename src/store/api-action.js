@@ -71,7 +71,6 @@ export const updateRegistration = (data) => (dispatch, getState, api) => {
     api.post(`/api/v1/event/update`, data, {
       headers: { Authorization: token },
     })
-      .then((res) => console.log(res))
       .catch((err) => console.log(err))
   );
 };
@@ -83,7 +82,6 @@ export const bookAgain = (data) => (dispatch, getState, api) => {
     api.post(`/api/v1/event/create`, data, {
       headers: { Authorization: token },
     })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err.response))
+      .catch((err) => dispatch(setError(err)))
   );
 };

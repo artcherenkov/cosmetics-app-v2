@@ -23,6 +23,9 @@ const Error = {
     message: `Неверный ID работника или предприятия`,
     inputs: [`id_ycl`, `id_branch`],
   },
+  TIME_ALREADY_RESERVED: {
+    message: `Время уже занято или является нерабочим`,
+  },
 };
 
 const initialState = {
