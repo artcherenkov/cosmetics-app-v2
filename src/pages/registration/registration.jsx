@@ -255,8 +255,10 @@ const mapDispatchToProps = (dispatch) => ({
       .then(() => dispatch(resetLoading()));
   },
   bookAgain(data) {
+    const date = moment(data.time).format(`YYYY-MM-DD`);
     dispatch(setLoading());
     dispatch(bookAgain(data))
+      .then(() => dispatch(fetchOneRegistration(date)))
       .then(() => dispatch(resetLoading()));
   },
 });
