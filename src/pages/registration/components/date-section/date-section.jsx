@@ -28,11 +28,6 @@ const DateSectionIos = ({ calendarState, onDateChange }) => {
               <Text style={styles.date}>{moment(calendarState.date)
                 .format(`DD MMM yyyy г.`)}</Text>
             </View>}
-        <TouchableOpacity onPress={() => setIsEditMode((prevState) => !prevState)}>
-          <Text style={{ color: Color.PRIMARY, fontSize: 16, textAlign: `center`, paddingTop: 15 }}>
-            {isEditMode ? `Готово` : `Перенести запись`}
-          </Text>
-        </TouchableOpacity>
       </View>
       <View style={styles.intervalView}>
         <View style={styles.intervalContainer}>
