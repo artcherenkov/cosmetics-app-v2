@@ -219,11 +219,12 @@ const RegistrationScreen = (props) => {
     );
   };
 
-  const onBookDateSubmit = (dateToBook) => {
+  const onBookDateSubmit = (dateToBook, duration) => {
     bookAgain({
       ...findRegistration(rawRegistrations, registration.id),
       ...createServiceList(formClientServices.services),
       time: moment(dateToBook).toISOString(true),
+      seance_length: duration * 60,
     }, () => {
       Alert.alert(`Клиент успешно перезаписан`);
       setIsPopupShown(false);
@@ -252,11 +253,6 @@ const RegistrationScreen = (props) => {
             onDateChange={handleDateChange}
           />
         )}
-        <View style={styles.bookAgainContainer}>
-          <TouchableOpacity style={styles.bookAgainBtn} onPress={setIsPopupShown.bind(null, true)}>
-            <Text style={styles.bookAgainTitle}>Перезаписать клиента</Text>
-          </TouchableOpacity>
-        </View>
         <ServicesSection
           services={services}
           clientServices={clientServices.services}
@@ -274,10 +270,16 @@ const RegistrationScreen = (props) => {
               onPress={handleSaveButtonClick}
               disabled={!isEdited}
             />}
+          <View style={{ height: 2, backgroundColor: `gray`, width: `100%`, marginVertical: 5 }}/>
+          <View style={styles.bookAgainContainer}>
+            <TouchableOpacity style={styles.bookAgainBtn} onPress={setIsPopupShown.bind(null, true)}>
+              <Text style={styles.bookAgainTitle}>Перезаписать клиента</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
       {isPopupShown && (
-        <Popup onSubmit={onBookDateSubmit} onClosePopup={onClosePopup}>
+        <Popup registration={registration} onSubmit={onBookDateSubmit} onClosePopup={onClosePopup}>
           <ServicesSection
             services={services}
             clientServices={formClientServices.services}
@@ -340,7 +342,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(bookAgain(data))
       .then(() => dispatch(fetchOneRegistration(date)))
       .then(() => dispatch(resetLoading()))
-      .then(cb);
+      // .then(cb);
   },
 });
 

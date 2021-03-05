@@ -35,9 +35,9 @@ export default StyleSheet.create({
     marginBottom: 10,
   },
   controls: {
-    flexDirection: `row`,
+    // flexDirection: `row`,
     width: `100%`,
-    justifyContent: `space-around`,
+    // justifyContent: `space-around`,
     zIndex: -1,
     marginBottom: 50,
   },

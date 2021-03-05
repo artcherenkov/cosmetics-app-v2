@@ -25,8 +25,8 @@ export default StyleSheet.create({
   popupContent: {
   },
   popupDateControls: {
-    flexDirection: `row`,
-    justifyContent: `center`,
+    flexDirection: `column`,
+    alignItems: `center`,
   },
   popupSubmit: {
     marginBottom: 10,
